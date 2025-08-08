@@ -1,15 +1,9 @@
-from playwright.async_api import Page, Locator
-from pydantic import BaseModel
+from playwright.async_api import Page, expect
 import time
-
-with open("/mnt/a/downloads/Lin_Mei_Experiened_Level_Software.pdf", "rb") as f:
-    b64 = f.read()
-
-class Item(BaseModel):
-    label: str
-    type: str
-    id: str
-    answer: str 
+from pydantic_ai.tools import RunContext
+from config import b64, Item, Profile_agent
+from dataclasses import dataclass
+from typing import List, Dict
 
 
 async def click_apply_button(page: Page):
@@ -45,14 +39,14 @@ async def extract_fields(page: Page):
     # await page.locator("form").wait_for(state="attached")
     form = page.locator("form")
     button = page.locator("form").locator("button")
-    with open('/mnt/a/projects/python/oracle_automation/form_html.txt', 'a') as file:
-        file.write(await form.inner_html())
-        file.write("\n")
-        file.write("\n")
-        file.write("next page of form from here\n")
-        file.write("\n")
-        file.write("\n")
-        file.write("\n")
+    # with open('/mnt/a/projects/python/oracle_automation/form_html.txt', 'a') as file:
+    #     file.write(await form.inner_html())
+    #     file.write("\n")
+    #     file.write("\n")
+    #     file.write("next page of form from here\n")
+    #     file.write("\n")
+    #     file.write("\n")
+    #     file.write("\n")
     print(button)
     return await form.inner_html()
 
@@ -81,8 +75,16 @@ async def enter_data(page: Page, fields: list[Item]):
             print(f"Filling email field {field.label} with value: {field.answer}")
             email_elem = form.locator(f"input[id='{field.id}']")
             if await email_elem.count() > 0:
+                if await page.input_value(f"input[id='{field.id}']") == field.answer:
+                    continue
                 await email_elem.first.fill(f"{field.answer}")
                 print(f"Filled email field {field.label} with value: {field.answer}")
+        elif field.type == "combobox":
+            print(f"Filling combobox field {field.label} with value: {field.answer}")
+            combobox_elem = form.locator(f"input[id='{field.id}']")
+            if await combobox_elem.count() > 0:
+                await combobox_elem.first.fill(f"{field.answer}")
+                print(f"Filled combobox field {field.label} with value: {field.answer}")
         elif field.type == "multiselect":
             print(f"Filling multiselect field {field.label} with value: {field.answer}")
             select_elem = form.locator(f"select[multiple][id='{field.id}']")
@@ -132,3 +134,57 @@ async def enter_data(page: Page, fields: list[Item]):
             if await special_select_elem.count() > 0:
                 await special_select_elem.evaluate('(element, html) => element.innerHTML = html', field.answer)
                 print(f"set special_select to field {field.label} with the valuse: {field.answer}")
+
+
+@dataclass
+class combobox_value:
+    combobox_id: str
+    dropdown_button_id: str
+
+@Profile_agent.tool
+async def get_combobox_values(ctx: RunContext[Page], ids: List[combobox_value]) -> Dict[str, List[str]]:
+    """Get values of comboboxes for the given IDs by clicking dropdown buttons and extracting options."""
+    print(f"Getting values for comboboxes with IDs: {[id.combobox_id for id in ids]}")
+    values = {}
+    
+    for combo in ids:
+        try:
+            # Click the dropdown button to open options
+            dropdown_button = ctx.deps.locator(f"#{combo.dropdown_button_id}")
+            if await dropdown_button.count() > 0:
+                await dropdown_button.click()
+                
+                # Wait for dropdown options to appear
+                # Assuming the dropdown modal/container follows the pattern: {combobox_id}-cx-select_modal
+                dropdown_modal = ctx.deps.locator(f"div[id='{combo.combobox_id}-cx-select__modal']")
+                await dropdown_modal.wait_for(state="visible", timeout=5000)
+                time.sleep(4)
+                # print(f"inner_html {await dropdown_modal.inner_html()}")
+                # time.sleep(30)
+                
+                # Get all option elements
+                option_elements = await dropdown_modal.locator(f"span[class='cx-select__list-item--content']").all()
+                
+                # Extract text from all options
+                option_values = []
+                
+                for options in option_elements:
+                    option_text = await options.inner_html()
+                    if option_text.strip():
+                        option_values.append(option_text.strip())
+                
+                values[combo.combobox_id] = option_values
+                
+                # Close dropdown by clicking elsewhere or pressing Escape
+                await ctx.deps.keyboard.press("Escape")
+                
+            else:
+                print(f"Dropdown button with ID {combo.dropdown_button_id} not found")
+                values[combo.combobox_id] = []
+                
+        except Exception as e:
+            print(f"Error getting values for combobox {combo.combobox_id}: {e}")
+            values[combo.combobox_id] = []
+
+    print(f"the value that are geted from the combobox {values}") 
+    return values

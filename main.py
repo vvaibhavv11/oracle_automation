@@ -1,22 +1,13 @@
-from playwright.async_api import async_playwright, Locator,Page
+from playwright.async_api import async_playwright, Page
 from playwright_stealth import Stealth
 from pydantic_ai import Agent, BinaryContent
-from pydantic_ai.models.google import GoogleModel
-from pydantic_ai.providers.google import GoogleProvider
-# from prompt import SYSTEM_PROMPT
 import asyncio
-from core import click_accept_cookies, click_apply_button, b64, Item, extract_fields, enter_data, click_next_button
-from prompt import SYSTEM_PROMPT
+from core import click_accept_cookies, click_apply_button, extract_fields, enter_data, click_next_button
+from config import Item, b64, Profile_agent
 import time
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
-provider = GoogleProvider(api_key=f"{os.getenv("GOOGLE_GEMINI_API_KEY")}")
-model = GoogleModel('gemini-2.5-flash', provider=provider)
-Profile_agent = Agent(model, system_prompt=SYSTEM_PROMPT, output_type=list[Item])
-
-async def ask_ai(fields: str, b64: bytes) -> list[Item]:
+async def ask_ai(page:Page, fields: str, b64: bytes) -> list[Item]:
     """Ask the AI to fill the fields based on the resume."""
     response = await Profile_agent.run(
         [
@@ -24,7 +15,8 @@ async def ask_ai(fields: str, b64: bytes) -> list[Item]:
             f"Here is the fields to fill: {fields}",
             "Here is the resume in base64 format:",
             BinaryContent(data=b64, media_type="application/pdf"),
-        ]
+        ],
+        deps=page
     )
     print("AI response:", response.output)
     return response.output
@@ -52,7 +44,7 @@ async def main():
                 await wait_for_page_load(page)
                 form_html = await extract_fields(page)
                 # print("Extracted form HTML:", form_html)
-                form_ans =  await ask_ai(form_html, b64)
+                form_ans =  await ask_ai(page, form_html, b64)
                 await enter_data(page, form_ans)
                 await click_next_button(page)
 
