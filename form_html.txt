@@ -1,0 +1,3004 @@
+
+    <!-- ko ifnot: requestErrorType -->
+    <header data-bind="attr: {'aria-busy': isLoading}">
+        <h1 class="apply-flow-dialog__header">
+            <span class="oj-helper-hidden-accessible hidden-accessible-copying-disabled" data-bind="i18n: 'email-verification.a11y.header'">Authentication screen.</span>
+            <span data-bind="i18n: 'email-verification.header'">Enter your email address.</span>
+        </h1>
+    </header>
+
+    <section class="apply-flow-dialog__content email-verification" data-bind="attr: {'aria-busy': isLoading}, setBodyScrollTo: { to: 0, when: isLoading }">
+        <p class="apply-flow-dialog__text" data-bind="i18n: isSMSVerificationEnabled ? 'apply-flow.candidate-verification.description.sms-enabled' : 'email-verification.description'">To get started, enter your email address. Your email address will be used to create and maintain your profile. If you are a current JPMC employee, use your JPMC email address to apply for jobs internally. If you are a current JPMC contractor or contingent worker (not paid by JPMC), please use your personal (not JPMC) email address. Failure to supply accurate and complete data can delay your recruiting process. You will be required to certify that the information you have provided is truthful prior to submitting your form. Information that cannot be verified will require documentation to support your entries.</p>
+
+        <div class="apply-flow-dialog__form">
+            <!-- ko ifnot: isLoading -->
+            <!-- ko if: isStandardApplyFlowEnabled -->
+            <quick-email-verification-form><!-- ko with: $parent -->
+
+<!-- ko if: activeForm -->
+<!-- ko component: { name: 'form-builder', params: { form: activeForm } } --><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--text" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--empty-disabled': isEmptyDisabled},
+                      class: attributes.cssClass">
+    <form-element-label params="element: element, forId: attributes.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="primary-email-0" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-primary-email-0"><!-- ko text : element.label -->Email Address<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <input class="input-row__control" data-bind="value: element.value,
+                           valueUpdate: element.valueUpdateType(),
+                           attr: element.attributes,
+                           i18nAttr: {'aria-invalid': isAriaInvalid()}
+                           readonly: element.isDisabled,
+                           hasFocus: hasFocus,
+                           a11y.setFocusOnTab: {focusOn: element.focusNextSelector, delay: 10, when: isFilled } ,
+                           event: {blur: blurHandler.bind($data)},
+                           preventEnter" id="primary-email-0" name="primary-email" type="email" autocomplete="email" aria-label="Email Address" aria-required="true" aria-describedby="primary-email-0-error" aria-invalid="false">
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: isBotsProtectionEnabled -->
+<captcha params="captchaCallback: afterCaptchaVerify.bind($parents[1])"><!-- ko if: isCaptchaEnable -->
+<!-- ko component: {
+            name: captchaTemplate,
+            params: {
+                captchaCallback: captchaCallback,
+                captchaData: captchaData
+            }
+    } --><div id="hCaptchaContainer" data-bind="invisibleHCaptcha: { callback: captchaCallback, captchaData: captchaData }">
+    <div data-size="invisible"><iframe aria-hidden="true" data-hcaptcha-widget-id="0itnpd4y1mui" data-hcaptcha-response="" src="https://newassets.hcaptcha.com/captcha/v1/35d74bd05c00419a145c74d0100baea37ccf26da/static/hcaptcha.html#frame=checkbox-invisible" style="display: none;"></iframe><textarea id="g-recaptcha-response-0itnpd4y1mui" name="g-recaptcha-response" style="display: none;"></textarea><textarea id="h-captcha-response-0itnpd4y1mui" name="h-captcha-response" style="display: none;"></textarea></div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+</captcha>
+<!-- ko if: honeyPotForm -->
+<!-- ko component: { name: 'form-builder', params: { form: honeyPotForm } } --><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--text input-row--invisible" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--empty-disabled': isEmptyDisabled},
+                      class: attributes.cssClass">
+    <form-element-label params="element: element, forId: attributes.id"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="honey-pot-1" aria-hidden="true">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-honey-pot-1"><!-- ko text : element.label -->honeypot<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <input class="input-row__control" data-bind="value: element.value,
+                           valueUpdate: element.valueUpdateType(),
+                           attr: element.attributes,
+                           i18nAttr: {'aria-invalid': isAriaInvalid()}
+                           readonly: element.isDisabled,
+                           hasFocus: hasFocus,
+                           a11y.setFocusOnTab: {focusOn: element.focusNextSelector, delay: 10, when: isFilled } ,
+                           event: {blur: blurHandler.bind($data)},
+                           preventEnter" id="honey-pot-1" name="honey-pot" cssclass="input-row--invisible" aria-label="honeypot" aria-hidden="true" tabindex="-1" aria-describedby="honey-pot-1-error" aria-invalid="false">
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: candidate.verificationMethod() === verificationMethods.EMAIL -->
+<div class="input-row__note">
+    <span class="text-color-secondary" data-bind="i18n: 'quick-apply-flow.authentication-screen.communication-text'">This is how we'll communicate with you.</span>
+    <!-- ko if: isSMSVerificationEnabled --><!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- ko if: candidate.verificationMethod() === verificationMethods.SMS --><!-- /ko -->
+
+<!-- ko if: enableLegalDisclaimer -->
+<legal-disclaimer class="quick-apply-flow-verify-method__message-container" params="legalDisclaimer: legalDisclaimer, legalDisclaimerForm: legalDisclaimerForm, isQuickApplyFlow: isQuickApplyFlowEnabled"><label class="input-row legal-disclaimer-container" aria-labelledby="agreements-checkbox-label" data-bind="css: {'input-row--invalid': showError}" for="legal-disclaimer-checkbox">
+    <input type="checkbox" class="input-row__hidden-control" id="legal-disclaimer-checkbox" data-bind="checked: legalDisclaimer.isAccepted, i18nAttr: { 'aria-invalid': isInvalid }, preventEnter, hasFocus: legalDisclaimer.hasFocus, attr: { 'aria-describedby': 'legalDisclaimerErrorMessage' }" aria-labelledby="legal-disclaimer-checkbox-label" required="" aria-describedby="legalDisclaimerErrorMessage" aria-invalid="false">
+
+    <span class="apply-flow-input-checkbox apply-flow-input-checkbox--focus-enabled" id="legal-disclaimer-checkbox-label">
+        <span class="apply-flow-input-checkbox__button" data-bind="click: toggleAccepted, css: {'apply-flow-input-checkbox__button--checked': legalDisclaimer.isAccepted}"></span>
+        <span class="apply-flow-input-checkbox__label apply-flow-input-checkbox__label--required">
+            <i18n params="key: 'apply-flow.legal-disclaimer.i-agree-with-terms-and-conditions'"><span data-bind="i18n: {key: key, tokens: tokens}">I agree with the <a id="legal-disclaimer-link" data-i18n-token="open_dialog_link" href="#" class="agreements-label-text-link" data-bind="click: $parent.openDialog.bind($parent)">terms and conditions</a></span>
+</i18n>
+            <span class="apply-flow-input-checkbox__label--required-star" aria-hidden="true"></span>
+        </span>
+    </span>
+
+    <!-- ko if: showError --><!-- /ko -->
+</label>
+
+<agreement-dialog params="model: legalDisclaimer, isVisible: isDialogVisible, headerText: dialogHeaderText, resetFocus: '#legal-disclaimer-link',isQuickApplyFlow : isQuickApplyFlow, isStandardApplyFlowEnabled : isStandardApplyFlowEnabled"><minimal-dialog params="isVisible: isVisible, ariaLabel: headerText, baseClass: baseClass"><oj-dialog initial-visibility="hide" resize-behavior="none" drag-affordance="none" cancel-behavior="none" modality="modeless" aria-modal="true" on-oj-focus="{{setFocusToBody}}" data-bind="focus: focusCallback,
+        attr:{
+            'aria-label': ariaLabel,
+            'aria-describedby': ariaDescribedBy,
+            'role': role
+        },
+        class: 'app-dialog font-family-primary ' + baseClass,
+        a11y.keysHandler: { keys: 'esc', handler: close },
+        moveChatBot: {
+            shouldMoveChatbot: shouldMoveChatbot
+        },
+        isDialogVisible: {
+            isVisible: isVisible,
+            afterClose: afterClose,
+            className: isEnableBodyClass ? baseClass : null,
+        }" class="app-dialog font-family-primary standard-apply-flow-agreement__dialog oj-dialog oj-component oj-component-initnode oj-complete" aria-label="Terms and Conditions" id="ui-id-9" tabindex="-1" role="dialog" style="display: none;">
+    
+
+    
+
+    
+<div class="oj-dialog-container" data-oj-context=""><div class="oj-dialog-header"><div class="oj-dialog-header app-dialog__hide-header" slot="header"></div></div><div class="oj-dialog-content oj-dialog-default-content"><div class="oj-dialog-body-wrapper"><div class="app-dialog__wrapper app-dialog__wrapper--align-center oj-dialog-body" data-bind="
+            css: { 'app-dialog__wrapper--active': isVisible },
+            class: 'app-dialog__wrapper--align-' + alignment()
+        " slot="body">
+        <div class="oj-dialog-body app-dialog__main background-color-dialog standard-apply-flow-agreement__dialog__main standard-apply-flow-agreement__dialog__main-center" data-bind="
+                class: dialogBaseClass,
+                a11y.setInitialFocus: {isVisible: isVisible, focusOn: '.app-dialog__content', delay: 1000 },
+                attr: { style: width() ? 'max-width: ' + width() : '' }
+            " tabindex="-1" style="">
+            <!-- ko if: !nodes['dialog-bar'] -->
+            <div class="app-dialog__bar text-color-secondary">
+                <button class="app-dialog__close focused-tooltip" data-bind="click: onClose, i18nAttr: {'title': 'apply-flow.a11y.close', 'aria-label': 'apply-flow.a11y.close'}" title="Close" aria-label="Close"></button>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko template: { nodes: nodes['dialog-bar'], data: $parent } --><!-- /ko -->
+
+            <!-- ko template: { nodes: nodes['dialog-body'], data: $parent } -->
+        <div class="app-dialog__header">
+            <h1 class="heading" data-bind="text: headerText">Terms and Conditions</h1>
+        </div>
+
+        <div aria-live="polite">
+            <div class="app-dialog__content basic-formatter" data-bind="html: model.description"> 
+ <div> 
+  <span class="x2tt x1a"><span class="x1a"><span class="x1a"><span class="x1a">Use the link below to view Terms and Conditions by country or region. Once you have read the content, acknowledge you understand and agree by clicking the "Agree" button. <br></span></span></span></span> 
+ </div> 
+ <div> 
+  <span class="x2tt x1a"><span class="x1a"><span class="x1a"><span class="x1a"><br></span></span></span></span> 
+ </div> 
+ <div> 
+  <a href="https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/pages/2001" target="_blank" rel="nofollow">https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/pages/2001</a> 
+ </div> 
+</div>
+        </div>
+
+        <div class="app-dialog__footer">
+            <div class="app-dialog__buttons-bar font-family-secondary text-color-primary">
+                <button class="button app-dialog__footer-button" data-bind="click: accept, hasFocus: true">
+                    <span class="button__label" data-bind="i18n: 'apply-flow.legal-disclaimer.accept-button'">Agree</span>
+                </button>
+            </div>
+        </div>
+    <!-- /ko -->
+        </div>
+    </div><div class="app-dialog__background oj-dialog-body" data-bind="
+            attr: { style: opacity() ? 'opacity: ' + opacity() : '' },
+            css: { 'app-dialog__background--no-animation': opacity() }
+        " style=""></div></div></div></div></oj-dialog>
+</minimal-dialog>
+</agreement-dialog>
+</legal-disclaimer>
+<!-- /ko -->
+
+<!-- /ko -->
+</quick-email-verification-form>
+            <!-- /ko -->
+            <!-- ko ifnot: isStandardApplyFlowEnabled --><!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: isLoading --><!-- /ko -->
+        </div>
+    </section>
+
+    <!-- ko ifnot: isLoading -->
+    <!-- ko component: 'email-verification-footer' --><footer class="apply-flow-pagination__buttons">
+    <button type="button" class="button apply-flow-pagination__button text-color-secondary focused-tooltip" data-bind="click: $parent.redirectBack, i18nAttr: {title: 'general.cancel-button', 'aria-label': 'general.cancel-button'}" data-qa="emailVerificationCancelButton" title="Cancel" aria-label="Cancel">
+        <span class="button__arrow button__arrow--left"></span>
+        <span class="button__label apply-flow-pagination__button-label" data-bind="i18n: 'general.cancel-button'">Cancel</span>
+    </button>
+
+    <div class="apply-flow-pagination__buttons-spacer"></div>
+
+    <button type="submit" class="button apply-flow-pagination__button theme-color-1 focused-tooltip" data-bind="enable :$parent.isNextButtonEnabled, i18nAttr: {title: 'general.next-button', 'aria-label': 'general.next-button'}" title="Next" aria-label="Next">
+        <span class="button__label" data-bind="i18n: 'general.next-button'">Next</span>
+        <span class="button__arrow button__arrow--right"></span>
+    </button>
+</footer>
+<!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: requestErrorType --><!-- /ko -->
+
+
+next page of form from here
+
+
+
+
+                    <div class="apply-flow-page" data-bind="routeTransition: 'apply-flow ',
+                                                        css: {
+                                                            'apply-flow-page--one-page': isSingleClickFlow,
+                                                            'apply-flow-page--blocked': isValidationInProgress
+                                                        },
+                                                        setBodyScrollTo: { to: 0, when: isFlowVisible }">
+                        <!-- ko if: flow -->
+
+                        <apply-flow-section data-bind="attr: {'id': 'presection-' + flow().preSection.number}" params="application: application, flow: flow(), section: flow().preSection" id="presection-1"><div class="apply-flow-section" data-bind="visible: isActive, a11y.setInitialFocus: { isVisible: isActive },
+        attr: { 'data-section-number': section.number, 'data-section-invalid': !isValid() },
+        setBodyScrollTo: { to: 0, when: isActive }" tabindex="-1" data-section-number="1">
+    <!-- ko if: showHeading --><!-- /ko -->
+
+    <ul class="apply-flow-page-list">
+        <!-- ko foreach: { data: section.pages, as: 'page' } -->
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693227" id="block-300061211693227" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693227"><div class="apply-flow-block apply-flow-block--profile-import" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() --><!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Import your profile  &lt;html&gt;
+&lt;body&gt;
+&lt;p style=&quot;display:none;&quot;&gt;
+&lt;img src=&quot;https://click.appcast.io/oraclecloud-9k/a17.png?ent=6&amp;e=20813&amp;t=1679064628448&quot; style=&quot;display:none;&quot; width=&quot;1px&quot; height=&quot;1px&quot;/&gt;
+&lt;img src=&quot;https://pixel.mathtag.com/event/img?mt_id=1635781&amp;mt_adid=425628&amp;mt_exem=&amp;mt_excl=&amp;v1=&amp;v2=&amp;v3=&amp;s1=&amp;s2=&amp;s3=&quot; width=&quot;1px&quot; height=&quot;1px&quot;/&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><div class="apply-flow-profile-import" tabindex="-1" data-bind="css: { 'apply-flow-profile-import--success': hasImportSucceded }">
+    <div class="apply-flow-block__header">
+        <!-- ko if: block.title -->
+        <h2 class="apply-flow-block__title" data-bind="text: block.title, attr: {'aria-label': block.title}" aria-label="Import your profile">Import your profile</h2>
+        <!-- /ko -->
+
+        <!-- ko if: block.instructions -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions, attr: {'aria-label': block.instructions}" aria-label="&lt;html&gt;
+&lt;body&gt;
+&lt;p style=&quot;display:none;&quot;&gt;
+&lt;img src=&quot;https://click.appcast.io/oraclecloud-9k/a17.png?ent=6&amp;e=20813&amp;t=1679064628448&quot; style=&quot;display:none;&quot; width=&quot;1px&quot; height=&quot;1px&quot;/&gt;
+&lt;img src=&quot;https://pixel.mathtag.com/event/img?mt_id=1635781&amp;mt_adid=425628&amp;mt_exem=&amp;mt_excl=&amp;v1=&amp;v2=&amp;v3=&amp;s1=&amp;s2=&amp;s3=&quot; width=&quot;1px&quot; height=&quot;1px&quot;/&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;">
+
+<p style="display:none;">
+<img src="https://click.appcast.io/oraclecloud-9k/a17.png?ent=6&amp;e=20813&amp;t=1679064628448" style="display:none;" width="1px" height="1px">
+<img src="https://pixel.mathtag.com/event/img?mt_id=1635781&amp;mt_adid=425628&amp;mt_exem=&amp;mt_excl=&amp;v1=&amp;v2=&amp;v3=&amp;s1=&amp;s2=&amp;s3=" width="1px" height="1px">
+</p>
+
+</p>
+        <!-- /ko -->
+    </div>
+
+    <!-- ko if: hasImportSucceded() === null && !isResumeParsingInProgress() -->
+    <div class="apply-flow-profile-import__awli-content">
+        <!-- ko if: config().awli.activeFlag() -->
+        <div data-bind="
+                    i18nAttr: { 'title': 'apply-flow.a11y.linkedin-profile-import-widget',
+                    'aria-label': 'apply-flow.a11y.linkedin-profile-import-widget' },
+                    awliWidget: {
+                        profileType: 'linkedin',
+                        activeFlag: config().awli.activeFlag(),
+                        integrationContext: config().awli.integrationContext(),
+                        clientId: config().awli.clientId() }" title="Apply with LinkedIn frame" aria-label="Apply with LinkedIn frame"><span class="IN-widget" data-lnkd-debug="&lt;script type=&quot;IN/AwliWidget+init&quot; data-api-key=&quot;77zktto7b5kmue&quot; data-integration-context=&quot;urn:li:organization:1068&quot; data-company-job-code=&quot;210649912&quot; data-mode=&quot;BUTTON_DATA&quot; data-color=&quot;blue&quot; data-size=&quot;large&quot; data-callback-method=&quot;onProfileData&quot;&gt;&lt;/script&gt;" style="display: inline-block; line-height: 1; vertical-align: bottom; padding: 0px; margin: 0px; text-indent: 0px;"><iframe id="{&quot;xdOrigin&quot;:&quot;https://jpmc.fa.oraclecloud.com&quot;,&quot;xdChannel&quot;:&quot;d4461a3f-359c-4ba4-82cf-74d06f669eec&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.2.23&quot;,&quot;debug&quot;:false}" name="{&quot;xdOrigin&quot;:&quot;https://jpmc.fa.oraclecloud.com&quot;,&quot;xdChannel&quot;:&quot;d4461a3f-359c-4ba4-82cf-74d06f669eec&quot;,&quot;framework&quot;:&quot;@linkedin/xdoor-sdk&quot;,&quot;version&quot;:&quot;0.2.23&quot;,&quot;debug&quot;:false}" src="about:blank" class="IN-widget IN-widget--iframe" scrolling="no" allowtransparency="true" frameborder="0" border="0" width="188" height="0" title="LinkedIn Embedded Content" style="vertical-align: bottom; width: 268px; height: 48px;"></iframe></span></div>
+        <!-- /ko -->
+
+        <!-- ko if: config().indeed.activeFlag() -->
+        <div>
+            <job-details-apply-with-indeed-button params="{ onClick: importProfile.bind($data, 'indeed'), isEnabled: true, mode: 'profileImportBlock' }"><button type="button" data-bind="click: onClick, enable: isEnabled, class: className" class="button apply-with-indeed-button__profile-import-block">
+    <span class="button__label" data-bind="attr: {'aria-label': ariaLabel }" aria-label="Apply with Indeed">
+        <i18n params="key: translationKey"><span data-bind="i18n: {key: key, tokens: tokens}">Apply with <span data-i18n-token="indeed_logo" data-bind="html: $parent.indeedLogoHTML"><i class="icon-indeed apply-with-indeed-button__icon"></i></span></span>
+</i18n>
+    </span>
+</button>
+</job-details-apply-with-indeed-button>
+        </div>
+
+        <!-- /ko -->
+        <!-- ko if: config().resumeParser.activeFlag() -->
+        <div class="apply-flow-profile-import-awli__button--file-upload">
+            <input type="file" accept=".doc,.docx,.odt,.pdf,.txt,.rtf,.htm,.html" class="apply-flow-profile-import-awli__file-upload" aria-labelledby="resumeParserLabel" data-bind="event: { change: onFileSelected, mouseover: onMouseover, mouseleave: onMouseleave, focusin: onMouseover, focusout: onMouseleave },
+                                  value: selectedFile,
+                                  disable: isResumeParsingInProgress,
+                                  i18nAttr: { 'aria-label': 'apply-flow.a11y.profile-import-through-resume' }" aria-label="Import your profile from resume">
+
+            <button class="apply-flow-profile-import-awli__button" type="button" tabindex="-1" aria-hidden="true" data-bind="i18n: 'apply-flow.section-personal-information.connect-with-cv-button', css: {'apply-flow-profile-import-awli__button--hover': isHoveredOnInputField}">Resume</button>
+        </div>
+        <!-- /ko -->
+    </div>
+
+    <!-- ko if: isReferralResumeParsing --><!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: hasImportSucceded --><!-- /ko -->
+
+    <div aria-live="polite" role="status">
+        <!-- ko if: isResumeParsingInProgress --><!-- /ko -->
+    </div>
+
+    <!-- ko ifnot: isResumeValid --><!-- /ko -->
+
+    <!-- ko if: hasImportSucceded() === false --><!-- /ko -->
+</div>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</apply-flow-section>
+
+                        <!-- ko foreach: { data: flow().sections, as: 'section' } -->
+                        <apply-flow-section data-bind="attr: {'id': 'section-' + section.number,
+                                        'data-scroll-spy': 'apply-flow-sections', 'data-scroll-spy-id': section.number},
+                                        boolAttr: {'aria-hidden':  $parent.isProfileImportLoading()}" params="application: $parent.application, flow: $parent.flow(), section: section" id="section-1" data-scroll-spy="apply-flow-sections" data-scroll-spy-id="1" aria-hidden="false"><div class="apply-flow-section" data-bind="visible: isActive, a11y.setInitialFocus: { isVisible: isActive },
+        attr: { 'data-section-number': section.number, 'data-section-invalid': !isValid() },
+        setBodyScrollTo: { to: 0, when: isActive }" tabindex="-1" data-section-number="1">
+    <!-- ko if: showHeading --><!-- /ko -->
+
+    <ul class="apply-flow-page-list">
+        <!-- ko foreach: { data: section.pages, as: 'page' } -->
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693228" id="block-300061211693228" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693228"><div class="apply-flow-block apply-flow-block--personal-information-basic" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">PERSONAL DETAILS</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">If selected, name entered below will be used for screening.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="PERSONAL DETAILS  If selected, name entered below will be used for screening.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: form --><!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693229" id="block-300061211693229" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693229"><div class="apply-flow-block apply-flow-block--personal-information-address-v2" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() --><!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Address  Please enter your home address.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: customJsValidation.showMessage --><!-- /ko -->
+
+<!-- ko if: isMessageVisible() --><!-- /ko -->
+
+<fieldset class="address-form__group">
+    <legend aria-labelledby="address-block-additional-instruction" class="apply-flow-block__header">
+        <!-- ko ifnot: isQuickApplyFlowEnabled -->
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Address</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: instructions">Please enter your home address.</p>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: isQuickApplyFlowEnabled --><!-- /ko -->
+        <!-- ko if: sectionDisabled --><!-- /ko -->
+    </legend>
+
+    <span class="oj-helper-hidden-accessible" id="address-block-additional-instruction" data-bind="text: accessibilityDescription">Address
+        Please enter your home address.This block contains dependent drop-down lists. Note that if you change a value for one of the fields, a value for another one in the block may automatically change. To change values in some drop-downs lists, you may need to edit the value in their parent drop-down list.</span>
+
+    <!-- ko if: countryFormConfig -->
+    <div class="address-block-v2-container">
+        <address-form-v2 data-bind="
+                    css: {
+                        'disabled-block-form' :  sectionDisabled,
+                    }" params="countryFormConfig: countryFormConfig,
+                                addressFormConfig: addressFormConfig,
+                                sectionNumber: sectionNumber,
+                                blockId: blockId,
+                                sectionDisabled: sectionDisabled,
+                                customJsValidation: customJsValidation,
+                                blockTitle: title,
+                                blockInstructions: instructions,
+                                isLoading: isAddressFormLoading
+        "><form-builder params="form: countryForm"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker geo-hierarchy-form-element input-row--filled" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid}">
+    <!-- ko if: element.label -->
+    <label class="input-row__label cx-select__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                         'input-row__label--disabled': element.isDisabled},
+                   attr: { for: element.id }" for="country-24">
+        <span class="input-row__label-text">
+            <!-- ko text : element.label -->Country<!-- /ko -->
+            <!-- ko if:  element.isRequired -->
+            <span class="cx-select__label--required" aria-hidden="true">*</span>
+            <!-- /ko -->
+        </span>
+    </label>
+    <!-- /ko -->
+
+    <div class="input-row__control-container reset-z-index">
+        <div data-bind="react: { component: 'cx-select', 
+                props: {
+                    valueObserver: element.value, 
+                    name: element.name(),
+                    searchCriteria: searchCriteria,
+                    isPreValueLoading: element.isPreValueLoading(),
+                    value: element.value(), 
+                    options: element.options(), 
+                    label: element.label(),
+                    id: element.id(),
+                    isRequired: element.isRequired(),
+                    isInvalid: isInvalid,
+                    isReadonly: element.isReadonly(),
+                    validateImmediately: element.validateImmediately,
+                    getErrorMessage: element.getErrorMessage,
+                    optionsKeys: element.optionsKeys()
+                }
+            }"><div class="cx-select-container "><div class="input-field-container"><div class="input-field-container__left"><span id="inputFieldLabel-country-24" class="input-field__label"></span><input autocomplete="none" name="country" id="country-24" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="grid" aria-controls="country-24-listbox" aria-expanded="false" aria-invalid="false" aria-required="true" class="cx-select-input 
+                                
+                                
+                                
+                            "></div><div class="input-field-container__right"><button id="country-24-reset-button" type="button" aria-label="Remove value for the Country field." title="Remove value for the Country field." class="icon-clear focused-tooltip "></button><button type="button" id="country-24-toggle-button" tabindex="-1" aria-label="Open the drop-down list for Country." title="Open the drop-down list for Country." aria-expanded="false" aria-controls="country-24-listbox" class="icon-dropdown-arrow "></button></div></div></div></div>
+
+        <div class="input-row__control-decorator"></div>
+        <inline-spinner params="alignment: 'right', isLoading: element.isLoading"><span class="inline-spinner inline-spinner--right" data-bind="css: cssClass">
+    <!-- ko if: label --><!-- /ko -->
+    <span class="inline-spinner__icon-wrapper">
+        <span class="inline-spinner__icon"></span>
+    </span>
+</span>
+</inline-spinner>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+
+<!-- ko if: isLoading() || isInitialValuesLoading() -->
+<address-form-skeleton><div data-bind="foreach: new Array(5)">
+    <div class="skeleton address-form-element__label-skeleton"></div>
+    <div class="skeleton address-form-element__skeleton"></div>
+
+    <div class="skeleton address-form-element__label-skeleton"></div>
+    <div class="skeleton address-form-element__skeleton"></div>
+
+    <div class="skeleton address-form-element__label-skeleton"></div>
+    <div class="skeleton address-form-element__skeleton"></div>
+
+    <div class="skeleton address-form-element__label-skeleton"></div>
+    <div class="skeleton address-form-element__skeleton"></div>
+
+    <div class="skeleton address-form-element__label-skeleton"></div>
+    <div class="skeleton address-form-element__skeleton"></div>
+</div>
+</address-form-skeleton>
+<!-- /ko -->
+
+<!-- ko if: addressForm() && !isLoading() && !isInitialValuesLoading() --><!-- /ko -->
+</address-form-v2>
+    </div>
+    <!-- /ko -->
+</fieldset>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693230" id="block-300061211693230" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693230"><div class="apply-flow-block apply-flow-block--preferred-locations" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Preferred Locations</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">Select up to 3 work locations in order of preference. To reorder your selections, remove the location and re-select.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Preferred Locations  Select up to 3 work locations in order of preference. To reorder your selections, remove the location and re-select.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: form -->
+
+<!-- ko component: { name: 'form-builder', params: { form: form } } --><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': element.isFocused,
+                      'input-row--filled': element.isFilled,
+                      'input-row--invalid': element.isInvalid}">
+    <!-- ko if: element.label -->
+    <label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                         'input-row__label--disabled': element.isDisabled},
+                   attr: { for: element.id }" for="preferredLocations-23">
+        <span class="input-row__label-text"><!-- ko text : element.label -->Preferred Location<!-- /ko --></span>
+    </label>
+    <!-- /ko -->
+
+    <div class="input-row__control-container">
+        <div data-bind="react: { component: 'cx-multi-select', 
+            props: {
+            valueObserver: element.value, 
+            name: element.name(),
+            label: element.label(),
+            value: elementValue(), 
+            options: elementOptions(),
+            id: element.id(),
+            isRequired: element.isRequired(),
+            optionsKeys: optionsKeys(),
+            onValueChange: onValueUpdate.bind($component),
+            iconClass: `cx-multi-select-pill__include-icon`,
+            isReadonly: isDisabled(),
+            maxOptionsToBeSelected: maxSelectionCount,
+            }
+            }"><div aria-busy="false" class="cx-multi-select-container "><div class="input-field-container "><div class="input-field-container__left"><input autocomplete="none" name="preferredLocations" id="preferredLocations-23" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="preferredLocations-23-listbox" aria-expanded="false" class="cx-multi-select-input 
+                                
+                                
+                            "></div><div class="input-field-container__right"><button type="button" id="preferredLocations-23-toggle-button" tabindex="-1" aria-label="Open the drop-down list for Preferred Location." title="Open the drop-down list for Preferred Location." aria-expanded="false" aria-controls="preferredLocations-23-listbox" class="icon-dropdown-arrow "></button></div></div></div><ul class="cx-multi-select-pill__values"></ul></div>
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</apply-flow-section>
+                        
+                        <apply-flow-section data-bind="attr: {'id': 'section-' + section.number,
+                                        'data-scroll-spy': 'apply-flow-sections', 'data-scroll-spy-id': section.number},
+                                        boolAttr: {'aria-hidden':  $parent.isProfileImportLoading()}" params="application: $parent.application, flow: $parent.flow(), section: section" id="section-2" data-scroll-spy="apply-flow-sections" data-scroll-spy-id="2" aria-hidden="false"><div class="apply-flow-section" data-bind="visible: isActive, a11y.setInitialFocus: { isVisible: isActive },
+        attr: { 'data-section-number': section.number, 'data-section-invalid': !isValid() },
+        setBodyScrollTo: { to: 0, when: isActive }" tabindex="-1" data-section-number="2" style="display: none;">
+    <!-- ko if: showHeading --><!-- /ko -->
+
+    <ul class="apply-flow-page-list">
+        <!-- ko foreach: { data: section.pages, as: 'page' } -->
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693233" id="block-300061211693233" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693233"><div class="apply-flow-block apply-flow-block--disqualification-questions" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Application Questions</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">Please complete the below questions.  If you previously applied to one of our positions, some of your answers may pre-populate. Make sure you review all your answers for accuracy and update them as needed before continuing to the next page.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Application Questions  Please complete the below questions.  If you previously applied to one of our positions, some of your answers may pre-populate. Make sure you review all your answers for accuracy and update them as needed before continuing to the next page.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: form -->
+<form-builder params="form: form()"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300000146864846-14" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300000146864846-14"><!-- ko text : element.label -->Are you at least 18 years of age?<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300000146864846">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Are you at least 18 years of age?" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> No</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300055639616098-15" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300055639616098-15"><!-- ko text : element.label -->For the position you are applying to, are you legally authorized to work in this country? Note: If hired, based upon the work location, you may be required to provide government issued documentation proving your work authorization, on or before your first day of employment.<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300055639616098">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="For the position you are applying to, are you legally authorized to work in this country? Note: If hired, based upon the work location, you may be required to provide government issued documentation proving your work authorization, on or before your first day of employment." class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> No</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300055639616094-16" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300055639616094-16"><!-- ko text : element.label -->Will you now or in the future require sponsorship for an employment-based visa status?<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300055639616094">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Will you now or in the future require sponsorship for an employment-based visa status?" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> No</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden --><!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300000086260768-17" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300000086260768-17"><!-- ko text : element.label -->What type of degree program are you currently enrolled in?<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300000086260768">
+        <!-- ko if: showSingleSelectPills --><!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select', 
+    props: {
+        ariaLabel: a11yLabel,
+        placeholder: placeholder,
+        valueObserver: element.value,
+        name: element.name(),
+        value: element.value(), 
+        options: element.options(), 
+        optionsKeys: element.optionsKeys(),
+        id: element.id(),
+        label: element.label(),
+        isRequired: element.isRequired(),
+        isInvalid: isInvalid,
+        isReadonly: element.isDisabled(),
+        validateImmediately: element.validateImmediately,
+        getErrorMessage: element.getErrorMessage } }"><div class="cx-select-container "><div class="input-field-container"><div class="input-field-container__left"><input autocomplete="none" name="300000086260768" id="300000086260768-17" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="grid" aria-controls="300000086260768-17-listbox" aria-expanded="false" aria-invalid="false" aria-required="true" class="cx-select-input 
+                                
+                                
+                                
+                            "></div><div class="input-field-container__right"><button type="button" id="300000086260768-17-toggle-button" tabindex="-1" aria-label="Open the drop-down list for What type of degree program are you currently enrolled in?." title="Open the drop-down list for What type of degree program are you currently enrolled in?." aria-expanded="false" aria-controls="300000086260768-17-listbox" class="icon-dropdown-arrow "></button></div></div></div></div>
+        <!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300000086260991-18" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300000086260991-18"><!-- ko text : element.label -->Please select your expected graduation month of your current studies, or if you have already graduated select the month you graduated from your most recent studies.<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300000086260991">
+        <!-- ko if: showSingleSelectPills --><!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select', 
+    props: {
+        ariaLabel: a11yLabel,
+        placeholder: placeholder,
+        valueObserver: element.value,
+        name: element.name(),
+        value: element.value(), 
+        options: element.options(), 
+        optionsKeys: element.optionsKeys(),
+        id: element.id(),
+        label: element.label(),
+        isRequired: element.isRequired(),
+        isInvalid: isInvalid,
+        isReadonly: element.isDisabled(),
+        validateImmediately: element.validateImmediately,
+        getErrorMessage: element.getErrorMessage } }"><div class="cx-select-container "><div class="input-field-container"><div class="input-field-container__left"><input autocomplete="none" name="300000086260991" id="300000086260991-18" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="grid" aria-controls="300000086260991-18-listbox" aria-expanded="false" aria-invalid="false" aria-required="true" class="cx-select-input 
+                                
+                                
+                                
+                            "></div><div class="input-field-container__right"><button type="button" id="300000086260991-18-toggle-button" tabindex="-1" aria-label="Open the drop-down list for Please select your expected graduation month of your current studies, or if you have already graduated select the month you graduated from your most recent studies.." title="Open the drop-down list for Please select your expected graduation month of your current studies, or if you have already graduated select the month you graduated from your most recent studies.." aria-expanded="false" aria-controls="300000086260991-18-listbox" class="icon-dropdown-arrow "></button></div></div></div></div>
+        <!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300003995264012-19" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300003995264012-19"><!-- ko text : element.label -->Please select your expected graduation year of your current studies, or if you have already graduated select the year you graduated from your most recent studies.<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300003995264012">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Please select your expected graduation year of your current studies, or if you have already graduated select the year you graduated from your most recent studies." class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2020</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2021</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2022</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2023</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2024</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2025</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2026</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2027</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> 2028</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300005408315743-20" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300005408315743-20"><!-- ko text : element.label -->I understand that this role is not eligible for any type of employment-based immigration sponsorship<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300005408315743">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="I understand that this role is not eligible for any type of employment-based immigration sponsorship" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I Confirm</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300005408315760-21" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300005408315760-21"><!-- ko text : element.label -->I understand that JPMorgan Chase &amp; Co., will not provide any assistance or sign any documentation in support of any other form of immigration sponsorship or benefit including optional or curricular practical training.<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300005408315760">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="I understand that JPMorgan Chase &amp; Co., will not provide any assistance or sign any documentation in support of any other form of immigration sponsorship or benefit including optional or curricular practical training." class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> No</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="300043759805804-22" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-300043759805804-22"><!-- ko text : element.label -->I understand that my performance in this program will be evaluated for the purpose of assessing a permanent full time offer post-graduation, a role that is likewise ineligible for employment-based immigration sponsorship. To qualify for this role, I attest that I will not require employment-based immigration sponsorship post-graduation.<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="300043759805804">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="I understand that my performance in this program will be evaluated for the purpose of assessing a permanent full time offer post-graduation, a role that is likewise ineligible for employment-based immigration sponsorship. To qualify for this role, I attest that I will not require employment-based immigration sponsorship post-graduation." class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I Affirm</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+<!-- ko if: noQuestions --><!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</apply-flow-section>
+                        
+                        <apply-flow-section data-bind="attr: {'id': 'section-' + section.number,
+                                        'data-scroll-spy': 'apply-flow-sections', 'data-scroll-spy-id': section.number},
+                                        boolAttr: {'aria-hidden':  $parent.isProfileImportLoading()}" params="application: $parent.application, flow: $parent.flow(), section: section" id="section-3" data-scroll-spy="apply-flow-sections" data-scroll-spy-id="3" aria-hidden="false"><div class="apply-flow-section" data-bind="visible: isActive, a11y.setInitialFocus: { isVisible: isActive },
+        attr: { 'data-section-number': section.number, 'data-section-invalid': !isValid() },
+        setBodyScrollTo: { to: 0, when: isActive }" tabindex="-1" data-section-number="3" style="display: none;">
+    <!-- ko if: showHeading --><!-- /ko -->
+
+    <ul class="apply-flow-page-list">
+        <!-- ko foreach: { data: section.pages, as: 'page' } -->
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693238" id="block-300061211693238" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693238"><div class="apply-flow-block apply-flow-block--tile-profile-items" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title apply-flow-block__title--required" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Education</span>
+    <!-- ko if: isRequired -->
+    <span aria-hidden="true" class="apply-flow-block__title--required-star"></span>
+    <!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">Enter details about your highest level of education, completed or in progress. If the degree is “High School Diploma/GED”, select "High School" as the School name. For all other degrees, please provide the name of your school. If your school is not listed, please select “Other”.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Education Required Enter details about your highest level of education, completed or in progress. If the degree is “High School Diploma/GED”, select &quot;High School&quot; as the School name. For all other degrees, please provide the name of your school. If your school is not listed, please select “Other”.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: customJsValidation.showMessage --><!-- /ko -->
+
+<!-- ko if: isQuickApplyFlowEnabled --><!--/ko -->
+
+<!-- ko ifnot: isQuickApplyFlowEnabled -->
+<!-- ko ifnot: isStandardApplyFlowEnabled --><!-- /ko -->
+<!-- /ko -->
+
+<!--ko if: isStandardApplyFlowEnabled -->
+<!-- ko template: 'profile-item-inline' --><div class="profile-item-container standard-apply-flow-profile-item-106-300000086377577" data-bind="class: baseContainerId">
+    <!-- ko if: !!inlineFormInfo.itemsTitle && inlineFormInfo.showAddProfileItemButton() && forms().length > 0 --><!-- /ko -->
+
+    <!-- ko if: inlineFormInfo.showErrorValidationMessage && !isRequiredValidation() --><!-- /ko -->
+
+    <div class="standard-apply-flow-profile-item" data-bind="css: {'standard-apply-flow-profile-item--small': inlineFormInfo.hasSmallPills}">
+        <!-- ko if: inlineFormInfo.showAddProfileItemButton() && forms().length > 0 --><!-- /ko -->
+
+        <!-- ko if: inlineFormInfo.showAddProfileItemButton() && showAddButton() -->
+        <div class="profile-add-item">
+            <!-- ko if: $component.isNidBlock --><!-- /ko -->
+
+            <button type="button" class="button apply-flow-profile-item-tile__new-tile" data-bind="enable: canAddProfileItem,
+                   attr: { id: addButtonId, 'data-qa': qaAttributeAdd,
+                        'data-profile-item-invalid': $component.isNidBlock || $component.isCitizenshipBlock ? !$component.isValid() : !isRequiredValidation()},
+                   click: addProfileItem" id="profileItemsAddButton-1754578250812" data-qa="add106">
+                <span class="button__label" data-bind="i18n: addButtonLabel">Add Education</span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: hasActiveForm --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693236" id="block-300061211693236" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693236"><div class="apply-flow-block apply-flow-block--tile-profile-items" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Experience</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">Enter details about your work experience</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Experience  Enter details about your work experience">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: customJsValidation.showMessage --><!-- /ko -->
+
+<!-- ko if: isQuickApplyFlowEnabled --><!--/ko -->
+
+<!-- ko ifnot: isQuickApplyFlowEnabled -->
+<!-- ko ifnot: isStandardApplyFlowEnabled --><!-- /ko -->
+<!-- /ko -->
+
+<!--ko if: isStandardApplyFlowEnabled -->
+<!-- ko template: 'profile-item-inline' --><div class="profile-item-container standard-apply-flow-profile-item-129-300000086377247" data-bind="class: baseContainerId">
+    <!-- ko if: !!inlineFormInfo.itemsTitle && inlineFormInfo.showAddProfileItemButton() && forms().length > 0 --><!-- /ko -->
+
+    <!-- ko if: inlineFormInfo.showErrorValidationMessage && !isRequiredValidation() --><!-- /ko -->
+
+    <div class="standard-apply-flow-profile-item" data-bind="css: {'standard-apply-flow-profile-item--small': inlineFormInfo.hasSmallPills}">
+        <!-- ko if: inlineFormInfo.showAddProfileItemButton() && forms().length > 0 --><!-- /ko -->
+
+        <!-- ko if: inlineFormInfo.showAddProfileItemButton() && showAddButton() -->
+        <div class="profile-add-item">
+            <!-- ko if: $component.isNidBlock --><!-- /ko -->
+
+            <button type="button" class="button apply-flow-profile-item-tile__new-tile" data-bind="enable: canAddProfileItem,
+                   attr: { id: addButtonId, 'data-qa': qaAttributeAdd,
+                        'data-profile-item-invalid': $component.isNidBlock || $component.isCitizenshipBlock ? !$component.isValid() : !isRequiredValidation()},
+                   click: addProfileItem" id="profileItemsAddButton-1754578250819" data-qa="add129">
+                <span class="button__label" data-bind="i18n: addButtonLabel">Add Experience</span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: hasActiveForm --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</apply-flow-section>
+                        
+                        <apply-flow-section data-bind="attr: {'id': 'section-' + section.number,
+                                        'data-scroll-spy': 'apply-flow-sections', 'data-scroll-spy-id': section.number},
+                                        boolAttr: {'aria-hidden':  $parent.isProfileImportLoading()}" params="application: $parent.application, flow: $parent.flow(), section: section" id="section-4" data-scroll-spy="apply-flow-sections" data-scroll-spy-id="4" aria-hidden="false"><div class="apply-flow-section" data-bind="visible: isActive, a11y.setInitialFocus: { isVisible: isActive },
+        attr: { 'data-section-number': section.number, 'data-section-invalid': !isValid() },
+        setBodyScrollTo: { to: 0, when: isActive }" tabindex="-1" data-section-number="4" style="display: none;">
+    <!-- ko if: showHeading --><!-- /ko -->
+
+    <ul class="apply-flow-page-list">
+        <!-- ko foreach: { data: section.pages, as: 'page' } -->
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693242" id="block-300061211693242" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693242"><div class="apply-flow-block apply-flow-block--file-upload" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Resume or Additional Documents</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">Please attach your resume, or any additional documents or URLs to supplement your application.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Resume or Additional Documents  Please attach your resume, or any additional documents or URLs to supplement your application.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><div class="file-upload-wrapper">
+    <div class="file-upload-wrapper__section">
+        <resume-upload-button params="model: resumeUploadButtonViewModel"><div data-bind="css: {'input-row--invalid': !isUploadingValidation() || !isRequiredValidation()}">
+    <!-- ko if: isDragAndDropActive() || showAttachementBlockV2 -->
+    <div class="attachment-upload-button attachment-upload-button--waiting" role="application" data-bind="event: { dragover: handleDragOver, dragenter: handleDragEnter, dragleave: handleDragLeave, drop: handleDrop.bind($component, event) },
+                   class: containerClass,
+                   css: {'attachment-upload-button--required': !isRequiredValidation()}">
+        <div class="attachment-upload-button__container font-family-secondary">
+            <!-- ko if: status() === STATES.WAITING || status() === STATES.DRAGOVER -->
+            <div class="attachment-upload-button__drag-and-drop">
+                <!-- ko if: isDragAndDropActive() -->
+                <span class="attachment-upload-button__drag-and-drop-label attachment-upload-button__drag-and-drop-label--required" data-bind="css: {'attachment-upload-button__drag-and-drop-label--required': isRequired}">
+                    <span data-bind="i18n: dropdownLabel">Drop Resume Here</span>
+                    <!-- ko if : isRequired -->
+                    <span class="attachment-upload-button__drag-and-drop-label--required-star" aria-hidden="true"></span>
+                    <!-- /ko -->
+                </span>
+
+                <!-- /ko -->
+            </div>
+
+            <!-- ko ifnot: defaultStatus() === STATES.FILLED -->
+            <div class="attachment-upload-button__upload-button">
+                <!-- ko if: isDragAndDropActive() -->
+                <span class="attachment-upload-button__or" data-bind="i18n: 'general.or'">Or</span>
+                <!-- /ko -->
+                <!-- ko component: {
+                        name: fileElement.component,
+                        params: {
+                            element: fileElement
+                        }
+                    } --><div class="file-form-element">
+    <input type="file" class="file-form-element__input" multiple="" data-bind="event: { change: element.onFileSelected },
+                  attr: attributes,
+                  hasFocus: isFocused,
+                  value: value" id="attachment-upload-2" name="attachment-upload" accept=".txt, .rtf, .doc, .docx, .pdf, .odt, .htm, .html" aria-required="true">
+    <label class="file-form-element__label attachment-upload-button__label theme-color-1" data-bind="attr: { for: attributes.id }, css: labelClass" for="attachment-upload-2">
+        <span data-bind="text: element.label">Upload Resume</span>
+        <!-- ko if : element.isRequired --><!-- /ko -->
+    </label>
+</div>
+<!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: status() === STATES.UPLOADING --><!-- /ko -->
+
+            <!-- ko if: status() === STATES.SAVED --><!-- /ko -->
+
+            <!-- ko if: status() === STATES.FILLED --><!-- /ko -->
+
+            <!-- ko if: showAttachementBlockV2 && pendingAction() --><!-- /ko -->
+        </div>
+
+        <!-- ko if: !showAttachementBlockV2 && pendingAction() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: isDragAndDropActive() || showAttachementBlockV2 --><!-- /ko -->
+
+    <!-- ko if: attachmentChangedLabelVisible --><!-- /ko -->
+
+    <!-- ko foreach: {data: validationErrors, as: 'error' } --><!-- /ko -->
+
+    <!-- ko ifnot: isUploadingValidation --><!-- /ko -->
+
+    <!-- ko ifnot: isRequiredValidation --><!-- /ko -->
+</div>
+
+<!-- ko if: isResumeButton -->
+<referral-resume-block params="resumeModel: model"><!-- ko if: isVisible --><!-- /ko -->
+</referral-resume-block>
+<!-- /ko -->
+</resume-upload-button>
+        <attachment-preuploaded params="attachments: resumeAttachments, finder: 'isResume'"><!-- ko if: attachments().length --><!-- /ko -->
+</attachment-preuploaded>
+    </div>
+    <div class="file-upload-wrapper__section">
+        <cover-letter-upload-button params="model: coverLetterUploadButtonViewModel"><div data-bind="css: {'input-row--invalid': !isUploadingValidation() || !isRequiredValidation()}">
+    <!-- ko if: isDragAndDropActive() || showAttachementBlockV2 -->
+    <div class="attachment-upload-button attachment-upload-button--waiting" role="application" data-bind="event: { dragover: handleDragOver, dragenter: handleDragEnter, dragleave: handleDragLeave, drop: handleDrop.bind($component, event) },
+                   class: containerClass,
+                   css: {'attachment-upload-button--required': !isRequiredValidation()}">
+        <div class="attachment-upload-button__container font-family-secondary">
+            <!-- ko if: status() === STATES.WAITING || status() === STATES.DRAGOVER -->
+            <div class="attachment-upload-button__drag-and-drop">
+                <!-- ko if: isDragAndDropActive() -->
+                <span class="attachment-upload-button__drag-and-drop-label" data-bind="css: {'attachment-upload-button__drag-and-drop-label--required': isRequired}">
+                    <span data-bind="i18n: dropdownLabel">Drop Cover Letter Here</span>
+                    <!-- ko if : isRequired --><!-- /ko -->
+                </span>
+
+                <!-- /ko -->
+            </div>
+
+            <!-- ko ifnot: defaultStatus() === STATES.FILLED -->
+            <div class="attachment-upload-button__upload-button">
+                <!-- ko if: isDragAndDropActive() -->
+                <span class="attachment-upload-button__or" data-bind="i18n: 'general.or'">Or</span>
+                <!-- /ko -->
+                <!-- ko component: {
+                        name: fileElement.component,
+                        params: {
+                            element: fileElement
+                        }
+                    } --><div class="file-form-element">
+    <input type="file" class="file-form-element__input" multiple="" data-bind="event: { change: element.onFileSelected },
+                  attr: attributes,
+                  hasFocus: isFocused,
+                  value: value" id="attachment-upload-3" name="attachment-upload" accept=".txt, .rtf, .doc, .docx, .pdf, .odt, .htm, .html">
+    <label class="file-form-element__label attachment-upload-button__label theme-color-1" data-bind="attr: { for: attributes.id }, css: labelClass" for="attachment-upload-3">
+        <span data-bind="text: element.label">Upload Cover Letter</span>
+        <!-- ko if : element.isRequired --><!-- /ko -->
+    </label>
+</div>
+<!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: status() === STATES.UPLOADING --><!-- /ko -->
+
+            <!-- ko if: status() === STATES.SAVED --><!-- /ko -->
+
+            <!-- ko if: status() === STATES.FILLED --><!-- /ko -->
+
+            <!-- ko if: showAttachementBlockV2 && pendingAction() --><!-- /ko -->
+        </div>
+
+        <!-- ko if: !showAttachementBlockV2 && pendingAction() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: isDragAndDropActive() || showAttachementBlockV2 --><!-- /ko -->
+
+    <!-- ko if: attachmentChangedLabelVisible --><!-- /ko -->
+
+    <!-- ko foreach: {data: validationErrors, as: 'error' } --><!-- /ko -->
+
+    <!-- ko ifnot: isUploadingValidation --><!-- /ko -->
+
+    <!-- ko ifnot: isRequiredValidation --><!-- /ko -->
+</div>
+
+<!-- ko if: isResumeButton --><!-- /ko -->
+</cover-letter-upload-button>
+        <attachment-preuploaded params="attachments: coverLetterAttachments, finder: 'isCoverLetter'"><!-- ko if: attachments().length --><!-- /ko -->
+</attachment-preuploaded>
+    </div>
+</div>
+
+<candidate-links params="section: section, code: code, linksRequired: linksRequired, blockId: blockId, displaySequence: displaySequence, isQuickApplyFlowEnabled: isQuickApplyFlowEnabled"><div class="candidate-links">
+    <!-- ko if: form -->
+    <form-builder params="form: form"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="candidate-links__link" data-bind="css: {'candidate-links__link--removable': element.isRemovable}">
+    <div class="input-row input-row--text" data-bind="css: {'input-row--focused': isFocused,
+                          'input-row--filled': isFilled,
+                          'input-row--invalid': isInvalid,
+                          'input-row--empty-disabled': isEmptyDisabled}">
+        <form-element-label params="element: element, forId: attributes.id, id: labelId"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="siteLink-1-6" id="siteLink-1-6-label" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-siteLink-1-6"><!-- ko text : element.label -->Link 1<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+        <div class="input-row__control-container">
+            <input class="input-row__control" data-bind="value: element.value,
+                            attr: attributes,
+                            disable: element.isDisabled,
+                            hasFocus: hasFocus,
+                            event: {blur: blurHandler.bind($data)},
+                            preventEnter" id="siteLink-1-6" name="siteLink-1" type="url">
+            <div class="input-row__control-decorator"></div>
+
+            <!-- ko if: isInvalid --><!-- /ko -->
+        </div>
+    </div>
+
+    <!-- ko if: element.isRemovable --><!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+    <!-- /ko -->
+
+    <!-- ko ifnot: isQuickApplyFlowEnabled -->
+    <button type="button" class="candidate-links__add-link theme-color-1" data-bind="
+            css: { 'candidate-links__add-link--hidden': isLimitReached },
+            a11y.setFocusOnClick: { focusOn: lastLinkInputSelector, delay: 100},
+            click: addLink">
+        <span data-bind="i18n: 'apply-flow.section-more-about-you.site-link-add-another-link'">Add Another Link</span>
+    </button>
+    <!-- /ko -->
+</div>
+</candidate-links>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693246" id="block-300061211693246" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693246"><div class="apply-flow-block apply-flow-block--disability" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Disability Information</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">JPMorgan Chase considers all qualified applicants for employment, and prohibits employment discrimination based on race, color, national origin, citizenship status, creed, religion, religious affiliation, age, sex, marital status, sexual orientation, gender identity, disability, veteran status, or any other protected status under applicable law (for example, civil union status, height, weight, arrest record, and status with regard to Public Assistance, to the extent protected under applicable law). 
+This information is requested on a voluntary basis to assist in JPMorgan Chase’s compliance with reporting obligations under Federal Equal Employment Opportunity laws and regulations and JPMorgan Chase’s affirmative action efforts.  This information will not be used in consideration for your employment and refusal to provide the information will not impact your application.  Any information you provide will be recorded and maintained in a confidential file, separate from all other records.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Disability Information  JPMorgan Chase considers all qualified applicants for employment, and prohibits employment discrimination based on race, color, national origin, citizenship status, creed, religion, religious affiliation, age, sex, marital status, sexual orientation, gender identity, disability, veteran status, or any other protected status under applicable law (for example, civil union status, height, weight, arrest record, and status with regard to Public Assistance, to the extent protected under applicable law). 
+This information is requested on a voluntary basis to assist in JPMorgan Chase’s compliance with reporting obligations under Federal Equal Employment Opportunity laws and regulations and JPMorgan Chase’s affirmative action efforts.  This information will not be used in consideration for your employment and refusal to provide the information will not impact your application.  Any information you provide will be recorded and maintained in a confidential file, separate from all other records.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><div data-bind="foreach: legislations">
+    <!--ko if: form -->
+    <!--ko if: $parent.legislations().length > 1 --><!-- /ko -->
+
+    <!--ko if: $parent.legislations().length === 1 -->
+    <!--ko if: hasReport -->
+    <div class="regulatory-disability">
+        <span data-bind="html: $parent.reportHeader, attr:{'aria-label': $parent.headerText}" aria-label="
+
+
+
+
+
+RTF Template
+
+
+
+Voluntary Self-Identification of Disability
+Form CC-305
+OMB Control Number 1250-0005
+Expires 04/30/2026
+Page 1 of 1
+Name: 
+Employee ID: 
+ (if applicable)
+Date: 8/7/2025
+
+
+
+
+Why are you being asked to complete this form?
+
+
+
+
+We are a federal contractor or subcontractor. The law requires us to provide equal employment opportunity to qualified people with disabilities. We have a goal of having at least 7% of our workers as people with disabilities. The law says we must measure our progress towards this goal. To do this, we must ask applicants and employees if they have a disability or have ever had one. People can become disabled, so we need to ask this question at least every five years.
+
+Completing this form is voluntary, and we hope that you will choose to do so. Your answer is confidential. No one who makes hiring decisions will see it. Your decision to complete the form and your answer will not harm you in any way. If you want to learn more about the law or this form, visit the U.S. Department of Labor's Office of Federal Contract Compliance Programs (OFCCP) website at www.dol.gov/ofccp. 
+
+
+
+
+How do you know if you have a disability?
+
+
+
+
+A disability is a condition that substantially limits one or more of your &amp;quot;major life activities.&amp;quot; If you have or have ever had such a condition, you are a person with a disability. Disabilities include, but are not limited to:
+
+
+
+
+
+Alcohol or other substance use disorder (not currently using drugs illegally)
+
+Autoimmune disorder, for example, lupus, fibromyalgia, rheumatoid arthritis, HIV/AIDS
+
+Blind or low vision
+
+Cancer (past or present) 
+
+Cardiovascular or heart disease
+
+Celiac disease
+
+Cerebral palsy
+
+Deaf or serious difficulty hearing 
+
+Diabetes
+
+Disfigurement, for example, disfigurement caused by burns, wounds, accidents, or congenital disorders
+
+Epilepsy or other seizure disorder 
+
+Gastrointestinal disorders, for example, Crohn's Disease, irritable bowel syndrome
+
+Intellectual or developmental disability
+
+Mental health conditions, for example, depression, bipolar disorder, anxiety disorder, schizophrenia, PTSD
+
+Missing limbs or partially missing limbs
+
+Mobility impairment, benefiting from the use of a wheelchair, scooter, walker, leg brace(s) and/or other supports
+
+Nervous system condition, for example, migraine headaches, Parkinson's disease, multiple sclerosis (MS)
+
+Neurodivergence, for example, attention-deficit/hyperactivity disorder (ADHD), autism spectrum disorder, dyslexia, dyspraxia, other learning disabilities
+
+Partial or complete paralysis (any cause)
+
+Pulmonary or respiratory conditions, for example, tuberculosis, asthma, emphysema
+
+Short stature (dwarfism)
+
+Traumatic brain injury
+
+
+
+
+
+
+
+
+Please check one of the boxes below:
+
+
+
+
+
+
+"><!--?xml version="1.0" encoding="UTF-8"?-->
+
+
+<!-- Generated by Oracle Analytics Publisher -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>RTF Template</title>
+<style type="text/css" id="internalStyle">
+.HcmRecDisaHdr0 {text-align: center;line-height: 13.872pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr1 {font-family: 'Arial Black';font-size: 12.0pt;color: #000000;}
+.HcmRecDisaHdr2 {text-align: right;line-height: 9.248pt;margin-top: 1.75pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 14.5pt;}
+.HcmRecDisaHdr3 {font-family: 'Arial';font-size: 8.0pt;color: #000000;}
+.HcmRecDisaHdr4 {line-height: 11.56pt;margin-top: 1.75pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr5 {font-family: 'Arial';font-size: 10.0pt;color: #000000;}
+.HcmRecDisaHdr6 {font-family: 'Times New Roman';font-size: 10.0pt;color: #000000;}
+.HcmRecDisaHdr7 {text-indent: 0.05pt;line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.55pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr8 {line-height: 13.294pt;margin-top: 1.75pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr9 {text-align: right;margin-top: 1.75pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr10 {height: 23.45pt;}
+.HcmRecDisaHdr11 {word-wrap:break-word;border-width: 2.25pt;border-color: #000000;border-style: double;width:100.0%;background-color: #ffffff;}
+.HcmRecDisaHdr12 {text-align: center;line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 26.7pt;margin-right: 5.399pt;}
+.HcmRecDisaHdr13 {font-family: 'Arial Black';font-size: 10.0pt;color: #000000;}
+.HcmRecDisaHdr14 {margin-top: 0.0pt;margin-bottom: 0.0pt;table-layout:fixed;margin-left: 5.399pt;margin-right: auto;width:97.84%;border-collapse: collapse;}
+.HcmRecDisaHdr15 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr16 {line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr17 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: -1.699pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr18 {text-decoration: none;}
+.HcmRecDisaHdr19 {font-family: 'Arial';font-size: 10.0pt;color: #0000ff;text-decoration: underline;}
+.HcmRecDisaHdr20 {text-indent: -14.2pt;line-height: 13.872pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 26.7pt;margin-right: 5.4pt;}
+.HcmRecDisaHdr21 {height: 23.55pt;}
+.HcmRecDisaHdr22 {line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 21.599pt;}
+.HcmRecDisaHdr23 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: -1.699pt;margin-right: 21.599pt;}
+.HcmRecDisaHdr24 {height: 254.32pt;}
+.HcmRecDisaHdr25 {word-wrap:break-word;width:100.0%;background-color: #ffffff;}
+.HcmRecDisaHdr26 {margin-top: 0.0pt;margin-bottom: 0.0pt;}
+.HcmRecDisaHdr27 {line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;}
+.HcmRecDisaHdr28 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 0.299pt;}
+.HcmRecDisaHdr29 {text-align: center;line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: -1.7pt;margin-right: 14.5pt;}
+.HcmRecDisaHdr30 {margin-top: 0.0pt;margin-bottom: 0.0pt;table-layout:fixed;margin-left: 5.399pt;margin-right: auto;width:97.8%;border-collapse: collapse;}
+</style>
+
+
+<h1 class="HcmRecDisaHdr0"><span class="HcmRecDisaHdr1"><b>Voluntary</b></span><span class="HcmRecDisaHdr1"><b> </b></span><span class="HcmRecDisaHdr1"><b>Self-Identification</b></span><span class="HcmRecDisaHdr1"><b> </b></span><span class="HcmRecDisaHdr1"><b>of</b></span><span class="HcmRecDisaHdr1"><b> </b></span><span class="HcmRecDisaHdr1"><b>Disability</b></span></h1>
+<p class="HcmRecDisaHdr2"><span class="HcmRecDisaHdr3">Form CC-305</span></p>
+<p class="HcmRecDisaHdr2"><span class="HcmRecDisaHdr3">OMB Control Number 1250-0005</span></p>
+<p class="HcmRecDisaHdr2"><span class="HcmRecDisaHdr3">Expires 04/30/2026</span></p>
+<p class="HcmRecDisaHdr2"><span class="HcmRecDisaHdr3">Page 1 of 1</span></p>
+<p class="HcmRecDisaHdr4"><span class="HcmRecDisaHdr5">Name: </span><span class="HcmRecDisaHdr5"></span></p>
+<p class="HcmRecDisaHdr4"><span class="HcmRecDisaHdr5">Employee ID:</span><span class="HcmRecDisaHdr6"> </span></p>
+<p class="HcmRecDisaHdr7"><span class="HcmRecDisaHdr6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="HcmRecDisaHdr5">(if applicable)</span></p>
+<p class="HcmRecDisaHdr8"><span class="HcmRecDisaHdr5">Date: </span><span class="HcmRecDisaHdr5">8/7/2025</span></p>
+<p class="HcmRecDisaHdr9"><br></p>
+<table class="HcmRecDisaHdr14">
+<colgroup><col width="100.0%">
+</colgroup><tbody><tr class="HcmRecDisaHdr10">
+<td valign="middle" class="HcmRecDisaHdr11"><p class="HcmRecDisaHdr12"><span class="HcmRecDisaHdr13"><b>Why</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>are</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>you</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>being </b></span><span class="HcmRecDisaHdr13"><b>asked</b></span><span class="HcmRecDisaHdr13"><b> to </b></span><span class="HcmRecDisaHdr13"><b>complete</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>this</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>form?</b></span></p>
+</td>
+</tr>
+</tbody></table>
+<p class="HcmRecDisaHdr15"><br></p>
+<p class="HcmRecDisaHdr16"><span class="HcmRecDisaHdr5">We are a federal contractor or subcontractor. The law requires us to provide equal employment opportunity to qualified people with disabilities. We have a goal of having at least 7% of our workers as people with disabilities. The law says we must measure our progress towards this goal. To do this, we must ask applicants and employees if they have a disability or have ever had one. People can become disabled, so we need to ask this question at least every five years.</span></p>
+<p class="HcmRecDisaHdr17"><br></p>
+<p class="HcmRecDisaHdr16"><span class="HcmRecDisaHdr5">Completing this form is voluntary, and we hope that you will choose to do so. Your answer is confidential. No one who makes hiring decisions will see it. Your decision to complete the form and your answer will not harm you in any way. If you want to learn more about the law or this form, visit the U.S. Department of Labor's Office of Federal Contract Compliance Programs (OFCCP) website at </span><a href="https://www.dol.gov/agencies/ofccp" target="_blank" class="HcmRecDisaHdr18"><span class="HcmRecDisaHdr19">www.dol.gov/ofccp</span></a><span class="HcmRecDisaHdr5">.&nbsp;&nbsp; </span></p>
+<p class="HcmRecDisaHdr20"><br></p>
+<table class="HcmRecDisaHdr14">
+<colgroup><col width="100.0%">
+</colgroup><tbody><tr class="HcmRecDisaHdr21">
+<td valign="middle" class="HcmRecDisaHdr11"><p class="HcmRecDisaHdr12"><span class="HcmRecDisaHdr13"><b>How</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>do</b></span><span class="HcmRecDisaHdr13"><b> you</b></span><span class="HcmRecDisaHdr13"><b> know</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>if</b></span><span class="HcmRecDisaHdr13"><b> you</b></span><span class="HcmRecDisaHdr13"><b> </b></span><span class="HcmRecDisaHdr13"><b>have</b></span><span class="HcmRecDisaHdr13"><b> a</b></span><span class="HcmRecDisaHdr13"><b> disability?</b></span></p>
+</td>
+</tr>
+</tbody></table>
+<p class="HcmRecDisaHdr15"><br></p>
+<p class="HcmRecDisaHdr22"><span class="HcmRecDisaHdr5">A disability is a condition that substantially limits one or more of your "major life activities." If you have or have ever had such a condition, you are a person with a disability. </span><span class="HcmRecDisaHdr5"><b>Disabilities include, but are not limited to:</b></span></p>
+<p class="HcmRecDisaHdr23"><br></p>
+<table class="HcmRecDisaHdr14">
+<colgroup><col width="100.0%">
+</colgroup><tbody><tr class="HcmRecDisaHdr24">
+<td valign="top" class="HcmRecDisaHdr25"><ul class="HcmRecDisaHdr26">
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Alcohol or other substance use disorder (not currently using drugs illegally)</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Autoimmune disorder, for example, lupus, fibromyalgia, rheumatoid arthritis, HIV/AIDS</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Blind or low vision</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Cancer (past or present) </span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Cardiovascular or heart disease</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Celiac disease</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Cerebral palsy</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Deaf or serious difficulty hearing&nbsp; </span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Diabetes</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Disfigurement, for example, disfigurement caused by burns, wounds, accidents, or congenital disorders</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Epilepsy or other seizure disorder </span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Gastrointestinal disorders, for example, Crohn's Disease, irritable bowel syndrome</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Intellectual or developmental disability</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Mental health conditions, for example, depression, bipolar disorder, anxiety disorder, schizophrenia, PTSD</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Missing limbs or partially missing limbs</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Mobility impairment, benefiting from the use of a wheelchair, scooter, walker, leg brace(s) and/or other supports</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Nervous system condition, for example, migraine headaches, Parkinson's disease, multiple sclerosis (MS)</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Neurodivergence, for example, attention-deficit/hyperactivity disorder (ADHD), autism spectrum disorder, dyslexia, dyspraxia, other learning disabilities</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Partial or complete paralysis (any cause)</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Pulmonary or respiratory conditions, for example, tuberculosis, asthma, emphysema</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Short stature (dwarfism)</span></p>
+</li>
+<li><p class="HcmRecDisaHdr27"><span class="HcmRecDisaHdr5">Traumatic brain injury</span></p>
+</li>
+</ul></td>
+</tr>
+</tbody></table>
+<p class="HcmRecDisaHdr28"><br></p>
+<table class="HcmRecDisaHdr30">
+<colgroup><col width="100.0%">
+</colgroup><tbody><tr class="HcmRecDisaHdr21">
+<td valign="middle" class="HcmRecDisaHdr11"><p class="HcmRecDisaHdr29"><span class="HcmRecDisaHdr13"><b>Please check one of the boxes below:</b></span></p>
+</td>
+</tr>
+</tbody></table>
+<p class="HcmRecDisaHdr15"><a name="page-total-master0" id="page-total-master0"></a><a name="page-total" id="page-total"></a><br></p>
+
+
+</span>
+    </div>
+    <!-- /ko -->
+    <form-builder params="form: form()"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--radiogroup" role="radiogroup" data-bind="attr: {'aria-labelledby': labelId},
+                css: {'input-row--invalid': isInvalid}" aria-labelledby="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-label">
+    <form-element-label params="element: element, id: labelId" data-bind="css: {'apply-flow-input-radio-group__label--hidden': element.isLabelHidden}" class="apply-flow-input-radio-group__label--hidden"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" id="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-label" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7"><!-- ko text : element.label -->Do you have a disability?<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <!-- ko foreach: {data: element.options, as: 'option'} -->
+        <input type="radio" class="input-row__hidden-control apply-flow-input-radio-control" data-bind="checkedValue: option.lookupCode,
+                            checked: $parent.element.value,
+                            attr: option.attributes,
+                            event: {blur: $parent.blurHandler.bind($parent)},
+                            preventEnter" value="ORA_PER_YES_US" id="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_YES_US" name="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7" aria-labelledby="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_YES_US">
+
+        <label class="apply-flow-input-radio" data-bind="attr: {'for': option.optionId}" for="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_YES_US">
+            <span class="apply-flow-input-radio__button apply-flow-input-radio__button--unchecked" aria-hidden="true" data-bind="css: {'apply-flow-input-radio__button--checked': $parent.element.value() === option.lookupCode,
+                                           'apply-flow-input-radio__button--unchecked': $parent.element.value() !== option.lookupCode}"></span>
+            <span aria-hidden="true" class="apply-flow-input-radio__label" data-bind="text: option.meaning, attr: {'id': 'label-' + option.optionId}" id="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_YES_US">Yes, I have a disability, or have had one in the past</span>
+        </label>
+        
+        <input type="radio" class="input-row__hidden-control apply-flow-input-radio-control" data-bind="checkedValue: option.lookupCode,
+                            checked: $parent.element.value,
+                            attr: option.attributes,
+                            event: {blur: $parent.blurHandler.bind($parent)},
+                            preventEnter" value="ORA_PER_NO_US" id="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_US" name="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7" aria-labelledby="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_US">
+
+        <label class="apply-flow-input-radio" data-bind="attr: {'for': option.optionId}" for="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_US">
+            <span class="apply-flow-input-radio__button apply-flow-input-radio__button--unchecked" aria-hidden="true" data-bind="css: {'apply-flow-input-radio__button--checked': $parent.element.value() === option.lookupCode,
+                                           'apply-flow-input-radio__button--unchecked': $parent.element.value() !== option.lookupCode}"></span>
+            <span aria-hidden="true" class="apply-flow-input-radio__label" data-bind="text: option.meaning, attr: {'id': 'label-' + option.optionId}" id="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_US">No, I do not have a disability and have not had one in the past</span>
+        </label>
+        
+        <input type="radio" class="input-row__hidden-control apply-flow-input-radio-control" data-bind="checkedValue: option.lookupCode,
+                            checked: $parent.element.value,
+                            attr: option.attributes,
+                            event: {blur: $parent.blurHandler.bind($parent)},
+                            preventEnter" value="ORA_PER_NO_ANSWER_US" id="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_ANSWER_US" name="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7" aria-labelledby="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_ANSWER_US">
+
+        <label class="apply-flow-input-radio" data-bind="attr: {'for': option.optionId}" for="US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_ANSWER_US">
+            <span class="apply-flow-input-radio__button apply-flow-input-radio__button--unchecked" aria-hidden="true" data-bind="css: {'apply-flow-input-radio__button--checked': $parent.element.value() === option.lookupCode,
+                                           'apply-flow-input-radio__button--unchecked': $parent.element.value() !== option.lookupCode}"></span>
+            <span aria-hidden="true" class="apply-flow-input-radio__label" data-bind="text: option.meaning, attr: {'id': 'label-' + option.optionId}" id="label-US-STANDARD-ORA_DISABILITY_STATUS-STANDARD-7-ORA_PER_NO_ANSWER_US">I do not want to answer</span>
+        </label>
+        <!-- /ko -->
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+    <!--ko if: hasReport -->
+    <div class="regulatory-disability-footer" data-bind="html: footer"><!--?xml version="1.0" encoding="UTF-8"?-->
+
+
+<!-- Generated by Oracle Analytics Publisher -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>RTF Template</title>
+<style type="text/css" id="internalStyle">
+.HcmRecDisaFtr0 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 14.5pt;}
+.HcmRecDisaFtr1 {line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 14.5pt;}
+.HcmRecDisaFtr2 {font-family: 'Arial';font-size: 10.0pt;color: #000000;}
+.HcmRecDisaFtr3 {text-align: center;text-indent: -14.2pt;line-height: 13.872pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 26.7pt;margin-right: 5.4pt;}
+.HcmRecDisaFtr4 {height: 105.046pt;}
+.HcmRecDisaFtr5 {word-wrap:break-word;border-width: 0.5pt;border-color: #000000;border-style: solid;width:100.0%;background-color: #ffffff;}
+.HcmRecDisaFtr6 {text-align: center;text-indent: -14.2pt;line-height: 13.872pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 40.85pt;margin-right: 19.549pt;}
+.HcmRecDisaFtr7 {text-align: center;text-indent: -14.2pt;line-height: 11.56pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 40.85pt;margin-right: 19.549pt;}
+.HcmRecDisaFtr8 {text-align: center;text-indent: -14.2pt;line-height: 13.294pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 40.85pt;margin-right: 19.549pt;}
+.HcmRecDisaFtr9 {text-align: center;line-height: 13.8pt;margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 40.85pt;margin-right: 19.549pt;}
+.HcmRecDisaFtr10 {margin-top: 0.0pt;margin-bottom: 0.0pt;table-layout:fixed;margin-left: 5.399pt;margin-right: auto;width:92.26%;border-collapse: collapse;}
+.HcmRecDisaFtr11 {margin-top: 0.0pt;margin-bottom: 0.0pt;margin-left: 5.399pt;margin-right: 5.4pt;}
+</style>
+
+
+<p class="HcmRecDisaFtr0"><br></p>
+<p class="HcmRecDisaFtr1"><span class="HcmRecDisaFtr2">PUBLIC </span><span class="HcmRecDisaFtr2">BURDEN</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">STATEMENT:</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">According</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">to</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">the</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">Paperwork</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">Reduction</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">Act</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">of</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">1995</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">no</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">persons are</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">required</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">to</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">respond</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">to</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">a</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">collection</span><span class="HcmRecDisaFtr2"> of</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">information</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">unless</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">such</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">collection</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">displays</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">a</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">valid</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">OMB</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">control</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">number.</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">This</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">survey</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">should</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">take</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">about</span><span class="HcmRecDisaFtr2"> 5</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">minutes </span><span class="HcmRecDisaFtr2">to</span><span class="HcmRecDisaFtr2"> </span><span class="HcmRecDisaFtr2">complete.</span></p>
+<p class="HcmRecDisaFtr3"><br></p>
+<table class="HcmRecDisaFtr10">
+<colgroup><col width="100.0%">
+</colgroup><tbody><tr class="HcmRecDisaFtr4">
+<td valign="top" class="HcmRecDisaFtr5"><p class="HcmRecDisaFtr6"><br></p>
+<p class="HcmRecDisaFtr7"><span class="HcmRecDisaFtr2"><b>For Employer Use Only</b></span></p>
+<p class="HcmRecDisaFtr6"><br></p>
+<p class="HcmRecDisaFtr7"><span class="HcmRecDisaFtr2">Employers may modify this section of the form as needed for recordkeeping purposes.</span></p>
+<p class="HcmRecDisaFtr8"><span class="HcmRecDisaFtr2">For example:</span></p>
+<p class="HcmRecDisaFtr8"><span class="HcmRecDisaFtr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Job Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+<p class="HcmRecDisaFtr8"><span class="HcmRecDisaFtr2">Date of Hire:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+<p class="HcmRecDisaFtr9"><br></p>
+</td>
+</tr>
+</tbody></table>
+<p class="HcmRecDisaFtr11"><a name="page-total-master0" id="page-total-master0"></a><a name="page-total" id="page-total"></a><br></p>
+
+
+</div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693247" id="block-300061211693247" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693247"><div class="apply-flow-block apply-flow-block--diversity" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Diversity Information</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) --><!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Diversity Information  ">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><div data-bind="foreach: legislations">
+    <!--ko if: form -->
+    <!--ko if: $parent.legislations().length > 1 --><!-- /ko -->
+
+    <!--ko if: $parent.legislations().length === 1 -->
+    <div class="regulatory-disability" data-bind="html: header"></div>
+    <form-builder params="form: form()"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--radiogroup" role="group" data-bind="attr: {'aria-labelledby': labelId},
+                css: {'input-row--invalid': isInvalid}" aria-labelledby="US-STANDARD-ORA_ETHNICITY_US_HL-STANDARD-8-label">
+    <form-element-label params="element: element, id: labelId"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" id="US-STANDARD-ORA_ETHNICITY_US_HL-STANDARD-8-label" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-STANDARD-ORA_ETHNICITY_US_HL-STANDARD-8"><!-- ko text : element.label -->Ethnicity<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <!-- ko foreach: {data: element.options, as: 'option'} -->
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="4" id="dq-option-4" aria-labelledby="label-dq-option-4">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-4">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">Hispanic or Latino</span>
+            </label>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--radiogroup" role="group" data-bind="attr: {'aria-labelledby': labelId},
+                css: {'input-row--invalid': isInvalid}" aria-labelledby="US-STANDARD-ORA_ETHNICITY_US_OTHERS-STANDARD-9-label">
+    <form-element-label params="element: element, id: labelId"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" id="US-STANDARD-ORA_ETHNICITY_US_OTHERS-STANDARD-9-label" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-STANDARD-ORA_ETHNICITY_US_OTHERS-STANDARD-9"><!-- ko text : element.label -->Select the races you identify with.<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <!-- ko foreach: {data: element.options, as: 'option'} -->
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="7" id="dq-option-7" aria-labelledby="label-dq-option-7">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-7">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">American Indian or Alaska Native</span>
+            </label>
+        </div>
+        
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="5" id="dq-option-5" aria-labelledby="label-dq-option-5">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-5">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">Asian</span>
+            </label>
+        </div>
+        
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="3" id="dq-option-3" aria-labelledby="label-dq-option-3">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-3">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">Black or African American</span>
+            </label>
+        </div>
+        
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="6" id="dq-option-6" aria-labelledby="label-dq-option-6">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-6">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">Native Hawaiian or other Pacific Islander</span>
+            </label>
+        </div>
+        
+        <div class="input-row__control-item">
+            <input type="checkbox" class="input-row__hidden-control" data-bind="value: option.lookupCode,
+                checked: $parent.element.value,
+                event: {blur: $parent.blurHandler.bind($parent)},
+                attr: {id: 'dq-option-' + option.lookupCode,
+                        'aria-labelledby': 'label-dq-option-' + option.lookupCode},
+                preventEnter" value="1" id="dq-option-1" aria-labelledby="label-dq-option-1">
+
+            <label class="apply-flow-input-checkbox" data-bind="attr: {for: 'dq-option-' + option.lookupCode}" for="dq-option-1">
+                <span class="apply-flow-input-checkbox__button"></span>
+                <span class="apply-flow-input-checkbox__label" data-bind="text: option.meaning">White</span>
+            </label>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="US-STANDARD-ORA_GENDER-STANDARD-10" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-STANDARD-ORA_GENDER-STANDARD-10"><!-- ko text : element.label -->Gender<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="US-STANDARD-ORA_GENDER-STANDARD">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Gender" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Female</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I do not wish to disclose</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Male</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="US-DFF-militarySpouseDomesticPartner-ATTRIBUTE11-11" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-DFF-militarySpouseDomesticPartner-ATTRIBUTE11-11"><!-- ko text : element.label -->Military Spouse/Domestic Partner<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="US-DFF-militarySpouseDomesticPartner-ATTRIBUTE11">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Military Spouse/Domestic Partner" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I do not wish to answer</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> No, my spouse or domestic partner is not an Armed Forces service member</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes, I am a surviving spouse/domestic partner</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes, my spouse or domestic partner is currently serving in the Reserve or National Guard</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes, my spouse or domestic partner is currently serving on active duty</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Yes,my SP/DP is a military veteran (served on active duty,Reserve or Guard in the past)</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="US-DFF-militaryStatus-ATTRIBUTE12-12" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-DFF-militaryStatus-ATTRIBUTE12-12"><!-- ko text : element.label -->Military Status<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="US-DFF-militaryStatus-ATTRIBUTE12">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Military Status" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I do not wish to answer</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Not a Veteran</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Reservist &amp;/or National Guard</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> Veteran/Prior Military Service</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+    <div class="regulatory-disability-footer" data-bind="html: footer"></div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " class="300061211693248" id="block-300061211693248" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="300061211693248"><div class="apply-flow-block apply-flow-block--veteran" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">Veteran Information</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) -->
+        <p class="apply-flow-block__instructions" data-bind="html: block.instructions">We invite veterans to identify themselves in accordance with federal VEVRAA regulations for affirmative action purposes.&nbsp; Under VEVRAA, a veteran may be classified as a disabled veteran, recently separated veteran, active duty wartime or campaign badge veteran, or Armed Forces service medal veteran.&nbsp; Please refer to the website
+▸ https://www.dol.gov/agencies/ofccp/veterans/protected-veterans ◂ for further information on these classifications.</p>
+        <!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="Veteran Information  We invite veterans to identify themselves in accordance with federal VEVRAA regulations for affirmative action purposes.&nbsp; Under VEVRAA, a veteran may be classified as a disabled veteran, recently separated veteran, active duty wartime or campaign badge veteran, or Armed Forces service medal veteran.&nbsp; Please refer to the website
+▸ https://www.dol.gov/agencies/ofccp/veterans/protected-veterans ◂ for further information on these classifications.">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!--ko if: legislations().length > 0 && displayBlock()-->
+<div data-bind="foreach: legislations">
+    <!--ko if: form -->
+    <form-builder params="form: form()"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--has-picker" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--disabled': isDisabled()}">
+    <form-element-label params="element: element, forId: element.id"><!-- ko if: element.label -->
+<label class="input-row__label" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="US-STANDARD-ORA_VETERAN_STATUS-STANDARD-13" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-US-STANDARD-ORA_VETERAN_STATUS-STANDARD-13"><!-- ko text : element.label -->Veteran Status<!-- /ko --></span>
+    <!-- ko if : element.isRequired --><!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container reset-z-index" data-bind="attr: { id: element.containerId, 'data-qa': element.name }" data-qa="US-STANDARD-ORA_VETERAN_STATUS-STANDARD">
+        <!-- ko if: showSingleSelectPills -->
+        <div data-bind="react: { component: 'cx-select-pills' , props: { list: element.options(),isMultiselect:false, value: element.value(), isReadonly: element.isDisabled(), valueObserver: element.value, optionKeys: element.optionsKeys(), headerLabel: element.label()}}"><ul role="list" aria-label="Veteran Status" class="cx-select-pills-container"><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I am a protected veteran</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I am not a protected veteran</span></button></li><li role="listitem"><button type="button" aria-pressed="false" class="cx-select-pill-section "><span class="cx-select-pill-name"> I do not wish to answer</span></button></li></ul></div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: showSingleSelectPills --><!-- /ko -->
+
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " id="block-ORA_AGREEMENTS" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="ORA_AGREEMENTS"><div class="apply-flow-block apply-flow-block--agreements" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title --><!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) --><!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="  ">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><!-- ko if: flow -->
+<!-- ko if: isBlockVisible -->
+<div class="apply-flow-block__component">
+    <!-- ko if: flow().jobAlertsEnabled --><!-- /ko -->
+
+    <!-- ko if: flow().optIn.isEnabled && isOptInVisible -->
+    <opt-in class="apply-flow-agreements__row" params="optIn: flow().optIn"><!-- ko if: preferencesLoaded -->
+<div class="input-row" aria-labelledby="agreements-checkbox-label">
+    <label class="apply-flow-input-checkbox" id="opt-in-checkbox-label">
+        <input type="checkbox" class="input-row__hidden-control" data-bind="checked: optIn.isAccepted, preventEnter" aria-labelledby="opt-in-checkbox-label">
+        <span class="apply-flow-input-checkbox__button apply-flow-input-checkbox--focus-enabled" data-bind="css: {'apply-flow-input-checkbox__button--checked': optIn.isAccepted}"></span>
+        <span class="apply-flow-input-checkbox__label apply-flow-input-checkbox--focus-enabled">
+            <span class="agreements-label-text">
+                <!-- ko if: optIn.hasDescription() -->
+                <i18n params="key: 'apply-flow.opt-in.i-agree'"><span data-bind="i18n: {key: key, tokens: tokens}">I agree to receive <a data-i18n-token="open_dialog_link" id="opt-in-link" href="#" class="agreements-label-text-link" data-bind="click: $parent.openDialog.bind($parent), clickBubble: false"> marketing communications </a></span>
+</i18n>
+                <!-- /ko -->
+
+                <!-- ko ifnot: optIn.hasDescription() --><!-- /ko -->
+            </span>
+        </span>
+    </label>
+</div>
+
+<agreement-dialog params="model: optIn, isVisible: isDialogVisible, headerText: dialogHeaderText, resetFocus: '#opt-in-link', isQuickApplyFlow : isQuickApplyFlow, isStandardApplyFlowEnabled : isStandardApplyFlowEnabled"><minimal-dialog params="isVisible: isVisible, ariaLabel: headerText, baseClass: baseClass"><oj-dialog initial-visibility="hide" resize-behavior="none" drag-affordance="none" cancel-behavior="none" modality="modeless" aria-modal="true" on-oj-focus="{{setFocusToBody}}" data-bind="focus: focusCallback,
+        attr:{
+            'aria-label': ariaLabel,
+            'aria-describedby': ariaDescribedBy,
+            'role': role
+        },
+        class: 'app-dialog font-family-primary ' + baseClass,
+        a11y.keysHandler: { keys: 'esc', handler: close },
+        moveChatBot: {
+            shouldMoveChatbot: shouldMoveChatbot
+        },
+        isDialogVisible: {
+            isVisible: isVisible,
+            afterClose: afterClose,
+            className: isEnableBodyClass ? baseClass : null,
+        }" class="app-dialog font-family-primary standard-apply-flow-agreement__dialog oj-dialog oj-component oj-component-initnode oj-complete" aria-label="Marketing Communications" id="ui-id-16" tabindex="-1" role="dialog" style="display: none;">
+    
+
+    
+
+    
+<div class="oj-dialog-container" data-oj-context=""><div class="oj-dialog-header"><div class="oj-dialog-header app-dialog__hide-header" slot="header"></div></div><div class="oj-dialog-content oj-dialog-default-content"><div class="oj-dialog-body-wrapper"><div class="app-dialog__wrapper app-dialog__wrapper--align-center oj-dialog-body" data-bind="
+            css: { 'app-dialog__wrapper--active': isVisible },
+            class: 'app-dialog__wrapper--align-' + alignment()
+        " slot="body">
+        <div class="oj-dialog-body app-dialog__main background-color-dialog standard-apply-flow-agreement__dialog__main standard-apply-flow-agreement__dialog__main-center" data-bind="
+                class: dialogBaseClass,
+                a11y.setInitialFocus: {isVisible: isVisible, focusOn: '.app-dialog__content', delay: 1000 },
+                attr: { style: width() ? 'max-width: ' + width() : '' }
+            " tabindex="-1" style="">
+            <!-- ko if: !nodes['dialog-bar'] -->
+            <div class="app-dialog__bar text-color-secondary">
+                <button class="app-dialog__close focused-tooltip" data-bind="click: onClose, i18nAttr: {'title': 'apply-flow.a11y.close', 'aria-label': 'apply-flow.a11y.close'}" title="Close" aria-label="Close"></button>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko template: { nodes: nodes['dialog-bar'], data: $parent } --><!-- /ko -->
+
+            <!-- ko template: { nodes: nodes['dialog-body'], data: $parent } -->
+        <div class="app-dialog__header">
+            <h1 class="heading" data-bind="text: headerText">Marketing Communications</h1>
+        </div>
+
+        <div aria-live="polite">
+            <div class="app-dialog__content basic-formatter" data-bind="html: model.description">Please confirm that you are open to receiving periodic emails regarding opportunities that match your profile.</div>
+        </div>
+
+        <div class="app-dialog__footer">
+            <div class="app-dialog__buttons-bar font-family-secondary text-color-primary">
+                <button class="button app-dialog__footer-button" data-bind="click: accept, hasFocus: true">
+                    <span class="button__label" data-bind="i18n: 'apply-flow.legal-disclaimer.accept-button'">Agree</span>
+                </button>
+            </div>
+        </div>
+    <!-- /ko -->
+        </div>
+    </div><div class="app-dialog__background oj-dialog-body" data-bind="
+            attr: { style: opacity() ? 'opacity: ' + opacity() : '' },
+            css: { 'app-dialog__background--no-animation': opacity() }
+        " style=""></div></div></div></div></oj-dialog>
+</minimal-dialog>
+</agreement-dialog>
+<!-- /ko -->
+</opt-in>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        
+        <li>
+            <!-- ko foreach: { data: page.blocks, as: 'block' } -->
+            <apply-flow-block data-bind="class: block.blockId, attr: {id: `block-${$component.getBlockId(block)}`, 
+                    'data-scroll-spy': 'apply-flow-blocks', 'data-scroll-spy-id': $component.getBlockId(block)}, " params="
+                block: block,
+                section: $component.section,
+                isActive: $component.isActive,
+                application: $component.application,
+                isSingleClickFlow: $component.isSingleClickFlow,
+                flow: $component.flow,
+            " id="block-ORA_ESIGNATURE" data-scroll-spy="apply-flow-blocks" data-scroll-spy-id="ORA_ESIGNATURE"><div class="apply-flow-block apply-flow-block--apply-flow-e-signature" data-bind="css: 'apply-flow-block--' + block.component">
+    <!-- ko if: shouldRenderBlockHeader() -->
+    <div class="apply-flow-block__header">
+        <apply-flow-block-title params="title: block.title, isSingleClickFlow: isSingleClickFlow, isRequired: isRequired"><!-- ko if: title -->
+<!-- ko if: isSingleClickFlow --><!-- /ko -->
+
+<!-- ko ifnot: isSingleClickFlow -->
+<h2 class="apply-flow-block__title" data-bind="css: { 'apply-flow-block__title--required': isRequired }">
+    <span data-bind="text: title">E-Signature</span>
+    <!-- ko if: isRequired --><!-- /ko -->
+</h2>
+<!-- /ko -->
+<!-- /ko -->
+</apply-flow-block-title>
+        <!-- ko if: (block.instructions && !sectionDisabled()) --><!-- /ko -->
+        <!-- ko if: sectionDisabled() --><!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="apply-flow-block__form-list" role="region" data-bind="attr: {'aria-label': blockAriaLabel},
+        css: {
+            'disabled-block' :  sectionDisabled,
+         }" aria-label="E-Signature  ">
+        <!-- ko component: {
+            name: block.component,
+            params: {
+                section: section,
+                code: block.code,
+                title: block.title,
+                instructions: block.instructions,
+                blockId: block.blockId,
+                application: application,
+                isActive: isActive,
+                additionalData: block.additionalData,
+                metadataServiceUrl: block.metadataServiceUrl,
+                readWriteServiceUrl: block.readWriteServiceUrl,
+                blockProperties: block.blockProperties,
+                flow: flow,
+                sectionDisabled: sectionDisabled,
+                isSingleClickFlow: isSingleClickFlow,
+                isStandardApplyFlowEnabled: isStandardApplyFlowEnabled,
+            }
+        } --><div class="apply-flow-block__component apply-flow-esign" data-bind="setFocusWhenInvalid">
+    <!-- ko if: areNewApplyFlowsEnabled -->
+    <quick-apply-flow-text-truncate class="apply-flow-esign__description" params="
+            text: esignDescription, 
+            minTextLength: 150,
+            isSectionActive: isSectionActive()
+        "><div class="text-truncate text-truncate--collapsed" data-bind="
+        css: {
+            'text-truncate--collapsible': isCollapsible(),
+            'text-truncate--collapsed': isCollapsed()
+        }
+    ">
+    <div class="text-truncate__content basic-formatter" data-bind="html: text, a11y.setTabIndex: { isTruncated: isCollapsed }">I hereby certify that all statements in this application form are true and correct to the best of my knowledge. I acknowledge and understand that JPMorgan Chase may deem any knowing misstatement and/or misrepresentation as dishonesty and serious misconduct, and is a just ground for the discontinuation of my job application, rescinding of any job offer extended, or for the termination of my employment with the Company. Please enter your first and last name below.</div>
+
+    <!-- ko if: worthTruncate() -->
+    <div class="text-truncate__footer">
+        <a class="text-truncate__toggle" href="javascript:void(0)" data-bind="
+                click: toggle, 
+            ">
+            <span class="text-truncate__toggle__icon text-truncate__toggle__icon--expand" data-bind="class: iconClass"></span>
+            <span class="text-truncate__toggle__text" data-bind="text: buttonLabel">Show More</span>
+        </a>
+    </div>
+    <!-- /ko -->
+</div>
+</quick-apply-flow-text-truncate>
+    <!-- /ko -->
+
+    <!-- ko ifnot: areNewApplyFlowsEnabled --><!-- /ko -->
+
+    <form-builder params="form: form" class="esign-form"><!-- ko foreach: {data: form.elements, as: 'element'} -->
+<!-- ko ifnot: element.isHidden -->
+<!-- ko component: {
+            name: element.component,
+            params: {
+                element: element
+            }
+        } --><div class="input-row input-row--text" data-bind="css: {'input-row--focused': isFocused,
+                      'input-row--filled': isFilled,
+                      'input-row--invalid': isInvalid,
+                      'input-row--empty-disabled': isEmptyDisabled},
+                      class: attributes.cssClass">
+    <form-element-label params="element: element, forId: attributes.id"><!-- ko if: element.label -->
+<label class="input-row__label input-row__label--required" data-bind="css: {'input-row__label--required': element.isRequired,
+                            'input-row__label--disabled': element.isDisabled},
+                      attr: {for: forId, id: id}, boolAttr: {'aria-hidden': element.isAriaLabelHidden}" for="fullName-4" aria-hidden="false">
+    <span class="input-row__linebreak" data-bind="attr: {id: labelTextId}" id="labelText-fullName-4"><!-- ko text : element.label -->Full Name<!-- /ko --></span>
+    <!-- ko if : element.isRequired -->
+    <span class="input-row__label--required-star" aria-hidden="true"></span>
+    <!-- /ko -->
+</label>
+<!-- ko if : element.helpText() && element.showLabelTooltip --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: element.instructions --><!-- /ko -->
+</form-element-label>
+
+    <div class="input-row__control-container">
+        <input class="input-row__control" data-bind="value: element.value,
+                           valueUpdate: element.valueUpdateType(),
+                           attr: element.attributes,
+                           i18nAttr: {'aria-invalid': isAriaInvalid()}
+                           readonly: element.isDisabled,
+                           hasFocus: hasFocus,
+                           a11y.setFocusOnTab: {focusOn: element.focusNextSelector, delay: 10, when: isFilled } ,
+                           event: {blur: blurHandler.bind($data)},
+                           preventEnter" id="fullName-4" name="fullName" autocomplete="off" aria-required="true" aria-describedby="fullName-4-error" aria-invalid="false">
+        <div class="input-row__control-decorator"></div>
+
+        <!-- ko if: isInvalid --><!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</form-builder>
+</div>
+<!-- /ko -->
+    </div>
+</div>
+</apply-flow-block>
+            <!-- /ko -->
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</apply-flow-section>
+                        <!-- /ko -->
+
+                        <apply-flow-pagination params="flow: flow, isValidationInProgress: isValidationInProgress, isStandardApplyFlowEnabled: isStandardApplyFlowEnabled, legalDisclaimerAcceptanceRequired: legalDisclaimerAcceptanceRequired"><div class="apply-flow-pagination">
+    <!-- ko if: validationMessage --><!-- /ko -->
+
+    <div class="apply-flow-pagination__buttons">
+        <!-- ko ifnot: isSingleClick -->
+
+        <!-- ko if: isStandardApplyFlowEnabled -->
+        <button type="button" class="button apply-flow-pagination__button text-color-secondary apply-flow-pagination__button--disabled" data-bind="
+                                click: back,
+                                i18nAttr: {title: 'general.previous-button', 'aria-label': 'general.previous-button'},
+                                css: {'apply-flow-pagination__button--disabled': isFirstSection},
+                                enable: !isFirstSection()" title="Back" aria-label="Back" disabled="">
+            <span class="button__arrow button__arrow--left"></span>
+            <span class="button__label apply-flow-pagination__button-label" data-bind="i18n: 'general.previous-button'">Back</span>
+        </button>
+
+        <apply-flow-navigation-pages params="sections: flow.sections, iterator: flowIterator, isStandardApplyFlowEnabled: isStandardApplyFlowEnabled"><!-- ko if: sections && sections.length > 1 -->
+<div class="apply-flow-navigation-pages text-color-secondary font-family-secondary" data-bind="visible: isVisible, attr: {'tabindex': isFocusable()}, i18nAttr: {'aria-label' : {key: 'apply-flow.navigation.page-menu', tokens: { active_section: iterator().currentSectionNumber(), total_sections: sections.length}}}" dir="ltr" role="navigation" tabindex="0" aria-label="Application flow: page 1 of 4">
+    <div class="apply-flow-navigation-pages__details">
+        <ul class="apply-flow-navigation-pages__sections">
+            <!-- ko foreach: { data: sections, as: 'section' } -->
+            <li class="apply-flow-navigation-pages__section">
+                <a class="apply-flow-navigation-pages__link apply-flow-navigation-pages__link--active apply-flow-navigation-pages__link--current" tabindex="0" data-bind="
+                        css: {
+                            'apply-flow-navigation-pages__link--current': $parent.isCurrent(section.number)
+                        },
+                        disabled: $parent.isCurrent(section.number),
+                        attr: {
+                            title: section.title,
+                            'aria-label': $parent.getPageTitle(section),
+                            href: '#'
+                        },
+                        click: $parent.navigate.bind($parent, section.number)" title="Personal Info" aria-label="1 Personal Info" href="#">
+                    <!-- ko text: $index() + 1 -->1<!-- /ko -->
+                </a>
+            </li>
+            
+            <li class="apply-flow-navigation-pages__section">
+                <a class="apply-flow-navigation-pages__link apply-flow-navigation-pages__link--active" tabindex="0" data-bind="
+                        css: {
+                            'apply-flow-navigation-pages__link--current': $parent.isCurrent(section.number)
+                        },
+                        disabled: $parent.isCurrent(section.number),
+                        attr: {
+                            title: section.title,
+                            'aria-label': $parent.getPageTitle(section),
+                            href: '#'
+                        },
+                        click: $parent.navigate.bind($parent, section.number)" title="Job Application Questions" aria-label="2 Job Application Questions" href="#">
+                    <!-- ko text: $index() + 1 -->2<!-- /ko -->
+                </a>
+            </li>
+            
+            <li class="apply-flow-navigation-pages__section">
+                <a class="apply-flow-navigation-pages__link apply-flow-navigation-pages__link--active" tabindex="0" data-bind="
+                        css: {
+                            'apply-flow-navigation-pages__link--current': $parent.isCurrent(section.number)
+                        },
+                        disabled: $parent.isCurrent(section.number),
+                        attr: {
+                            title: section.title,
+                            'aria-label': $parent.getPageTitle(section),
+                            href: '#'
+                        },
+                        click: $parent.navigate.bind($parent, section.number)" title="Experience" aria-label="3 Experience" href="#">
+                    <!-- ko text: $index() + 1 -->3<!-- /ko -->
+                </a>
+            </li>
+            
+            <li class="apply-flow-navigation-pages__section">
+                <a class="apply-flow-navigation-pages__link apply-flow-navigation-pages__link--active" tabindex="0" data-bind="
+                        css: {
+                            'apply-flow-navigation-pages__link--current': $parent.isCurrent(section.number)
+                        },
+                        disabled: $parent.isCurrent(section.number),
+                        attr: {
+                            title: section.title,
+                            'aria-label': $parent.getPageTitle(section),
+                            href: '#'
+                        },
+                        click: $parent.navigate.bind($parent, section.number)" title="More About You" aria-label="4 More About You" href="#">
+                    <!-- ko text: $index() + 1 -->4<!-- /ko -->
+                </a>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</div>
+<!-- /ko -->
+</apply-flow-navigation-pages>
+
+        <!-- ko ifnot: isLastSection -->
+        <button type="button" class="button apply-flow-pagination__button theme-color-1 focused-tooltip" data-bind="click: next, enable: isNextEnabled(), i18nAttr: {title: 'general.next-button', 'aria-label': 'general.next-button'}" data-qa="applyFlowPaginationNextButton" disabled="" title="Next" aria-label="Next">
+            <span class="button__label" data-bind="i18n: 'general.next-button'">Next</span>
+            <span class="button__arrow button__arrow--right"></span>
+        </button>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot: isStandardApplyFlowEnabled --><!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: (isSingleClick || isLastSection()) --><!-- /ko -->
+    </div>
+</div>
+</apply-flow-pagination>
+
+                        <!-- /ko -->
+                    </div>
+                
+
+next page of form from here
+
+
+
