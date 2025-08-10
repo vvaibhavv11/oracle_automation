@@ -1,5 +1,5 @@
 from playwright.async_api import Page, expect
-import time
+from time import sleep
 from pydantic_ai.tools import RunContext
 from config import b64, Item, Profile_agent
 from dataclasses import dataclass
@@ -37,6 +37,7 @@ async def click_accept_cookies(page: Page):
 
 async def extract_fields(page: Page):
     # await page.locator("form").wait_for(state="attached")
+    sleep(4)
     form = page.locator("form")
     button = page.locator("form").locator("button")
     # with open('/mnt/a/projects/python/oracle_automation/form_html.txt', 'a') as file:
@@ -54,12 +55,72 @@ async def extract_fields(page: Page):
 async def click_next_button(page: Page):
     form = page.locator("form")
     next_button = form.locator("button[type='submit']")
+    print(f"next_button {next_button}")
     if await next_button.count() > 0:
-        print("Clicking 'Next' button to proceed to the next page...")
         async with page.expect_navigation():
-            print("Next button found, clicking...")
             await next_button.first.click()
-            print("Clicked 'Next' button")
+    else:
+        print("button submit not found")
+        buttons = await form.locator("button").all()
+        # print(f"next_button {buttons}")
+        for button in buttons:
+            # print(f"button value {await button.text_content()}")
+            button_text = await button.text_content()
+            if button_text is None:
+                continue
+            if button_text.strip() == "Next":
+                async with page.expect_navigation():
+                    await button.click()
+            elif button_text.strip() == "Submit":
+                async with page.expect_navigation():
+                    await button.click()
+                    
+@Profile_agent.tool
+async def get_education_fields(ctx: RunContext[Page], apply_flow_block_id: str) -> str:
+    print(f"called the tool for the get field of the education field with id {apply_flow_block_id}")
+    article = ctx.deps.locator(f"apply-flow-block[id='{apply_flow_block_id}']")
+    print("\n")
+    print("\n")
+    print("\n")
+    print(f"inner html: {await article.inner_html()}")
+    print("\n")
+    print("\n")
+    print("\n")
+    delete_buttons = article.locator("button[title='Delete']")
+    count = await delete_buttons.count()
+    for i in range(count):
+        await delete_buttons.nth(0).click()
+        await ctx.deps.wait_for_timeout(500)
+        # print(f"all delete_buttons that present {delete_buttons}")
+        # for delete_button in delete_buttons:
+        #     await delete_button.click()
+        #     sleep(2)
+    sleep(1)
+    education_button = article.get_by_text("Add Education")
+    await education_button.click()
+    sleep(1)
+    return await article.inner_html()
+
+@Profile_agent.tool
+async def enter_the_education_fields(ctx: RunContext[Page], fields: list[Item], apply_flow_block_id: str) -> str:
+    print(f"call the tool for entering the data for the education field with fields {fields}")
+    article = ctx.deps.locator(f"apply-flow-block[id='{apply_flow_block_id}']")
+    for field in fields:
+        if field.type == "combobox":
+            print(f"Filling combobox field {field.label} with value: {field.answer}")
+            combobox_elem = article.locator(f"input[id='{field.id}']")
+            if await combobox_elem.count() > 0:
+                await combobox_elem.first.fill(f"{field.answer}")
+                sleep(3)
+                await ctx.deps.keyboard.press("Enter")
+                print(f"Filled combobox field {field.label} with value: {field.answer}")
+    sleep(1)
+    education_button = article.get_by_text("Add Education")
+    await education_button.click()
+    sleep(1)
+    return "done"
+
+
 
 
 async def enter_data(page: Page, fields: list[Item]):
@@ -71,19 +132,34 @@ async def enter_data(page: Page, fields: list[Item]):
             if await input_elem.count() > 0:
                 await input_elem.first.fill(f"{field.answer}")
                 print(f"Filled text field {field.label} with value: {field.answer}")
+        elif field.type == "button":
+            try:
+                print(f"pressing the buttont with the text: {field.answer}")
+                # button_elems = await form.get_by_text(f"{field.answer}").all()
+                button_elems = form.get_by_label(f"{field.label}")
+                button = button_elems.get_by_text(f"{field.answer}")
+                await button.click()
+            except:
+                continue
         elif field.type == "email":
             print(f"Filling email field {field.label} with value: {field.answer}")
             email_elem = form.locator(f"input[id='{field.id}']")
             if await email_elem.count() > 0:
-                if await page.input_value(f"input[id='{field.id}']") == field.answer:
+                try:
+                    print(f"email that is there {await page.input_value(f"input[id='{field.id}']")}")
+                    if await page.input_value(f"input[id='{field.id}']") == field.answer:
+                        continue
+                    await email_elem.first.fill(f"{field.answer}")
+                    print(f"Filled email field {field.label} with value: {field.answer}")
+                except:
                     continue
-                await email_elem.first.fill(f"{field.answer}")
-                print(f"Filled email field {field.label} with value: {field.answer}")
         elif field.type == "combobox":
             print(f"Filling combobox field {field.label} with value: {field.answer}")
             combobox_elem = form.locator(f"input[id='{field.id}']")
             if await combobox_elem.count() > 0:
                 await combobox_elem.first.fill(f"{field.answer}")
+                sleep(3)
+                await page.keyboard.press("Enter")
                 print(f"Filled combobox field {field.label} with value: {field.answer}")
         elif field.type == "multiselect":
             print(f"Filling multiselect field {field.label} with value: {field.answer}")
@@ -126,7 +202,7 @@ async def enter_data(page: Page, fields: list[Item]):
             file_input = form.locator(f"input[type='file']")
             if await file_input.count() > 0:
                 await file_input.first.set_input_files(files=[{"name": "resume.pdf", "mimeType": "application/pdf", "buffer": b64}])
-                time.sleep(20)
+                sleep(20)
                 print(f"Uploaded file to field {field.label}: {field.answer}")
         elif field.type == "special_select":
             print(f"Setting special select field {field.label} with value: {field.answer}")
@@ -150,17 +226,18 @@ async def get_combobox_values(ctx: RunContext[Page], ids: List[combobox_value]) 
     for combo in ids:
         try:
             # Click the dropdown button to open options
-            dropdown_button = ctx.deps.locator(f"#{combo.dropdown_button_id}")
+            dropdown_button = ctx.deps.locator(f"button[id='{combo.dropdown_button_id}']")
             if await dropdown_button.count() > 0:
                 await dropdown_button.click()
+                sleep(4)
                 
                 # Wait for dropdown options to appear
                 # Assuming the dropdown modal/container follows the pattern: {combobox_id}-cx-select_modal
                 dropdown_modal = ctx.deps.locator(f"div[id='{combo.combobox_id}-cx-select__modal']")
                 await dropdown_modal.wait_for(state="visible", timeout=5000)
-                time.sleep(4)
+                sleep(4)
                 # print(f"inner_html {await dropdown_modal.inner_html()}")
-                # time.sleep(30)
+                # sleep(30)
                 
                 # Get all option elements
                 option_elements = await dropdown_modal.locator(f"span[class='cx-select__list-item--content']").all()
